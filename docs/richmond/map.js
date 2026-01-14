@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ---- GeoJSON paths (change this for each neighborhood) ----
-    const neighborhoodUrl = 'bayview.geojson';
+    const neighborhoodUrl = 'richmond.geojson';
     const districtUrl = 'district.geojson';
 
     const [neighborhoodGJ, districtGJ] = await Promise.all([
