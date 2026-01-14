@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const neighborhoodUrl = "sunset.geojson";
   
     // Two separate district files
-    const district1Url = "district-1.geojson";
-    const district2Url = "district-2.geojson";
+    const district1Url = "district.geojson";
+    const district2Url = "district_7.geojson";
   
     const [neighborhoodGJ, district1GJ, district2GJ] = await Promise.all([
       fetch(neighborhoodUrl).then((r) => r.json()),
