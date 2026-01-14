@@ -1,0 +1,133 @@
+/* base */
+body {
+    margin: 0;
+    padding: 0 0 20px 0;
+    font-family: 'Barlow', sans-serif;
+  }
+  
+  /* layout */
+  .cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .map-container {
+    position: relative;
+    width: 100vw;
+    max-width: 400px;     /* mobile max width */
+    margin: 10px auto;
+  }
+  
+  /* MOBILE-FIRST: map width matches screen, height = width (square) */
+  .map {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1 / 1;   /* makes it square on mobile */
+    box-shadow: 0 4px 8px rgba(0,0,0,.1);
+  }
+  
+  /* legend */
+  .legend {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    background: rgba(255,255,255,.95);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.12);
+    padding: 6px 8px;
+    font-size: 11.5px;
+    line-height: 1.1;
+    display: inline-block;
+    max-width: 240px;
+    pointer-events: none;
+  }
+  
+  .legend .legend-title {
+    color: #333;
+    margin-bottom: 4px;
+  }
+  
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.2;
+  }
+  
+  .legend-line {
+    width: 22px;
+    height: 0;
+    border-top-width: 3px;
+    border-top-style: solid;
+    border-top-color: #f36e57;
+    flex-shrink: 0;
+  }
+  
+  /* info box */
+  .info-box {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 14px;
+    z-index: 2;
+    width: calc(100% - 12px);
+    max-width: 460px;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    background: rgba(255,255,255,.98);
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    font-size: 13px;
+    line-height: 1.35;
+    max-height: 40%;
+    overflow-y: auto;
+  }
+  
+  a {
+    color: #666666;
+    text-decoration: underline;
+  }
+  
+  /* DESKTOP OVERRIDES */
+  @media (min-width: 769px) {
+  
+    .map-container {
+      max-width: 520px;        /* desktop width */
+    }
+  
+    .map {
+      max-width: 520px;
+      aspect-ratio: auto;      /* disable mobile square behavior */
+      height: 250px;           /* 🔥 NEW: desktop height = 300px */
+    }
+  
+    .note-container {
+      max-width: 520px;        /* match map width */
+    }
+  }
+  
+  /* note below map */
+  .note-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 6px 0;
+    text-align: left;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9em;
+  font-style: bold;
+    color: #555;
+  }
+
+  .cta-strong {
+    font-weight: 600; /* or 700 if you want it heavier */
+  }
+  
+  
+  @media (max-width: 768px) {
+    .note-container {
+      max-width: 400px;        /* match mobile map width */
+    }
+  }
+  

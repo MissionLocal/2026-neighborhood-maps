@@ -1,0 +1,48 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Bayview map</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="cont">
+    <div class="map-container">
+      <!-- no title pill for this map -->
+      <div id="map" class="map"></div>
+
+      <!-- legend in top-left -->
+      <div id="legend" class="legend">
+        <!-- <div class="legend-title">Bayview & district</div> -->
+      
+        <div class="legend-row">
+          <span class="legend-line" style="border-top-color:#efbe25;"></span>
+          <span>Bayview Hunters-Point</span>
+        </div>
+      
+        <div class="legend-row">
+          <span class="legend-line" style="border-top-color:#efbe25; border-top-style:dashed;"></span>
+          <span>District 10</span>
+        </div>
+      </div>
+      
+
+      <!-- info box kept for consistency; hidden by JS -->
+      <div id="info-box" class="info-box"></div>
+    </div>
+  </div>
+
+  <div class="note-container">
+    <span class="cta-strong">Click map to see neighborhood resources.</span> Map by Kelly Waldron, data from <a href="https://data.sfgov.org" target="_blank">S.F. Open Data</a>.
+  </div>
+
+
+  <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
+  <script src="map.js"></script>
+</body>
+</html>
