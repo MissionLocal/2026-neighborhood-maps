@@ -100,7 +100,7 @@ body {
     .map {
       max-width: 520px;
       aspect-ratio: auto;      /* disable mobile square behavior */
-      height: 250px;           /* 🔥 NEW: desktop height = 300px */
+      height: 400px;           /* 🔥 NEW: desktop height = 300px */
     }
   
     .note-container {
