@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         paint: {
           "line-color": district2Color,
           "line-width": 1.8,
-          "line-dasharray": [0.5, 2],
+          "line-dasharray": [3, 2],
         },
       });
   
