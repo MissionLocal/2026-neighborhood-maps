@@ -94,11 +94,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       // ---- Ensure District 1 is on top ----
-try {
+
     map.moveLayer("district-1-outline");
-  } catch (e) {
-    // no-op if layer doesn't exist
-  }
   
   
       // ---- Interaction: click anywhere → open link ----
