@@ -131,3 +131,12 @@ body {
     }
   }
   
+  .legend-line {
+    width: 22px;
+    height: 0;
+    border-top-width: 3px; /* try 3.5px if you want punchier dots */
+    border-top-style: solid;
+    border-top-color: #f36e57;
+    flex-shrink: 0;
+  }
+  
