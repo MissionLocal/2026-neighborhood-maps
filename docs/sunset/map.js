@@ -92,6 +92,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           "line-dasharray": [3, 2],
         },
       });
+
+      // ---- Ensure District 1 is on top ----
+try {
+    map.moveLayer("district-1-outline");
+  } catch (e) {
+    // no-op if layer doesn't exist
+  }
+  
   
       // ---- Interaction: click anywhere → open link ----
       const neighborhoodUrlOut = "https://missionlocal.org/"; // <-- your story URL
