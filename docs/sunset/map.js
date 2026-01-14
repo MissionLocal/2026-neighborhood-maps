@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // ---- Colors ----
       const neighborhoodColor = "#efbe25"; // gold
       const district1Color = "#0dd6c7";    // teal
-      const district2Color = "#f67cf6";    // pink
+      const district2Color = "#efbe25";    // pink
   
       // ---- Sources ----
       map.addSource("neighborhood", { type: "geojson", data: neighborhoodGJ });
