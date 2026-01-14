@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         container: 'map',
         style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
         center: [-122.431297, 37.773972], // San Francisco center
-        zoom: 11,
+        zoom: 10.5,
         maxBounds: [
             [-122.60, 37.68],   // southwest corner
             [-122.28, 37.88]    // northeast corner
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     if (window.innerWidth < 768) {
-        map.setZoom(11); // mobile tweak
+        map.setZoom(10.5); // mobile tweak
     }
 
     // ---- GeoJSON paths (change this for each neighborhood) ----
