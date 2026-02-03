@@ -12,9 +12,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
   const districtLegendLine = document.getElementById("district-legend-line");
 
-  // Hide info box on load
-  if (infoBox) infoBox.style.display = "none";
-
   // Helper function to interpolate between two colors
   function interpolateColor(color1, color2, factor) {
     const hex1 = color1.replace("#", "");
@@ -37,32 +34,72 @@ document.addEventListener("DOMContentLoaded", async () => {
       .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
   }
 
-  // ---- Fetch sales tax data ----
-  let recoveryData = null;
-  try {
-    const response = await fetch("../adjusted_sales_tax.csv");
-    const csvText = await response.text();
-    const rows = csvText.trim().split("\n");
+  // Helper to format quarter as human readable
+  function formatQuarter(quarterStr) {
+    // quarterStr like "2025Q3"
+    const year = quarterStr.substring(0, 4);
+    const quarter = quarterStr.substring(5, 7);
+    return `Q${quarter.replace("Q", "")} ${year}`;
+  }
 
-    // Find Bayview row
-    const bayviewRow = rows.find((row) =>
+  // Helper to format dollar amount
+  function formatDollars(amount) {
+    const millions = amount / 1000000;
+    return `$${millions.toFixed(1)}M`;
+  }
+
+  // ---- Fetch both CSVs ----
+  let recoveryData = null;
+  let actualRevenue = null;
+
+  try {
+    // Fetch adjusted sales tax data
+    const adjustedResponse = await fetch("../adjusted_sales_tax.csv");
+    const adjustedText = await adjustedResponse.text();
+    const adjustedRows = adjustedText.trim().split("\n");
+    const adjustedHeaders = adjustedRows[0].split(",");
+
+    // Find Bayview row in adjusted data
+    const bayviewAdjustedRow = adjustedRows.find((row) =>
       row.includes("Bayview Hunters Point")
     );
 
-    if (bayviewRow) {
-      const values = bayviewRow.split(",");
+    if (bayviewAdjustedRow) {
+      const values = bayviewAdjustedRow.split(",");
       recoveryData = {
         recovery_pct: parseFloat(values[28]),
         latest_quarter: values[29].trim(),
         baseline_quarter: values[30].trim(),
       };
     }
+
+    // Fetch master sales tax data for actual revenue
+    const masterResponse = await fetch("../master_sales_tax.csv");
+    const masterText = await masterResponse.text();
+    const masterRows = masterText.trim().split("\n");
+    const masterHeaders = masterRows[0].split(",");
+
+    // Find the column name for latest quarter (e.g., "2025Q3")
+    const latestQuarterCol = recoveryData.latest_quarter;
+    const colIndex = masterHeaders.findIndex(
+      (h) => h.trim() === latestQuarterCol
+    );
+
+    // Find Bayview row in master data
+    const bayviewMasterRow = masterRows.find((row) =>
+      row.includes("Bayview Hunters Point")
+    );
+
+    if (bayviewMasterRow && colIndex !== -1) {
+      const values = bayviewMasterRow.split(",");
+      actualRevenue = parseFloat(values[colIndex]);
+    }
   } catch (error) {
     console.error("Error loading sales tax data:", error);
   }
 
-  // ---- Determine color based on recovery (interpolate on -40 to +40 scale) ----
-  let fillColor = "#dddddd"; // default gray
+  // ---- Determine color based on recovery ----
+  let fillColor = "#dddddd";
   let outlineColor = "#dddddd";
 
   if (recoveryData) {
@@ -77,12 +114,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else if (pct >= 40) {
       fillColor = yellow;
     } else if (pct < 0) {
-      // Interpolate between magenta (-40) and gray (0)
-      const factor = (pct + 40) / 40; // 0 at -40%, 1 at 0%
+      const factor = (pct + 40) / 40;
       fillColor = interpolateColor(magenta, gray, factor);
     } else {
-      // Interpolate between gray (0) and yellow (40)
-      const factor = pct / 40; // 0 at 0%, 1 at 40%
+      const factor = pct / 40;
       fillColor = interpolateColor(gray, yellow, factor);
     }
 
@@ -96,27 +131,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       districtLegendLine.style.borderTopColor = outlineColor;
     }
 
-    // Update legend with better reader-facing text
-    const absPct = Math.abs(recoveryData.recovery_pct);
-    let statusText;
+    // Build info box content
+    if (actualRevenue && recoveryData) {
+      const revenueFormatted = formatDollars(actualRevenue);
+      const quarterFormatted = formatQuarter(recoveryData.latest_quarter);
+      const sign = recoveryData.recovery_pct >= 0 ? "+" : "";
 
-    if (recoveryData.recovery_pct < 0) {
-      statusText = `Sales tax revenue in <strong>${
-        recoveryData.latest_quarter
-      }</strong> is <strong>${absPct.toFixed(
-        1
-      )}% below</strong> the same period in 2019`;
-    } else if (recoveryData.recovery_pct > 0) {
-      statusText = `Sales tax revenue in <strong>${
-        recoveryData.latest_quarter
-      }</strong> is <strong>${recoveryData.recovery_pct.toFixed(
-        1
-      )}% above</strong> the same period in 2019`;
-    } else {
-      statusText = `Sales tax revenue in <strong>${recoveryData.latest_quarter}</strong> has <strong>returned to</strong> the same period in 2019`;
+      infoBox.innerHTML = `
+                <div style="font-weight: 600; margin-bottom: 4px;">Bayview Hunters Point</div>
+                <div style="margin-bottom: 6px;">Sales tax revenue, ${quarterFormatted}: <strong>${revenueFormatted}</strong></div>
+                <div>Percent change from 2019: <strong>${sign}${recoveryData.recovery_pct.toFixed(
+        0
+      )}%</strong></div>
+            `;
+      infoBox.style.display = "block";
     }
-
-    recoveryStatDiv.innerHTML = statusText;
   }
 
   const map = new mapboxgl.Map({
@@ -144,7 +173,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   ]);
 
   map.on("load", () => {
-    // ---- Sources ----
     map.addSource("neighborhood", {
       type: "geojson",
       data: neighborhoodGJ,
@@ -155,7 +183,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       data: districtGJ,
     });
 
-    // ---- Layers ----
     map.addLayer({
       id: "neighborhood-fill",
       type: "fill",
@@ -187,7 +214,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       },
     });
 
-    // ---- Keep labels on top ----
     try {
       if (map.getLayer("road-label-navigation")) {
         map.moveLayer("road-label-navigation");
@@ -196,10 +222,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         map.moveLayer("settlement-subdivision-label");
       }
     } catch (e) {
-      // fail silently if style layers differ
+      // fail silently
     }
 
-    // Initial resize for embeds
     map.resize();
     pymChild.sendHeight();
   });
