@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ---- Fetch sales tax data ----
   let recoveryData = null;
   try {
-    const response = await fetch("../../sales-tax/adjusted_sales_tax.csv");
+    const response = await fetch("../adjusted_sales_tax.csv");
     const csvText = await response.text();
     const rows = csvText.trim().split("\n");
 
