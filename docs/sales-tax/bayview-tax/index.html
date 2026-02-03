@@ -19,13 +19,25 @@
             <!-- legend in top-left -->
             <div id="legend" class="legend">
                 <div class="legend-row">
-                    <span class="legend-line" style="border-top-color:#efbe25;"></span>
+                    <span id="neighborhood-legend-line" class="legend-line" style="border-top-color:#efbe25;"></span>
                     <span>Bayview Hunters-Point</span>
                 </div>
 
                 <div class="legend-row">
-                    <span class="legend-line" style="border-top-color:#efbe25; border-top-style:dashed;"></span>
+                    <span id="district-legend-line" class="legend-line"
+                        style="border-top-color:#efbe25; border-top-style:dashed;"></span>
                     <span>District 10</span>
+                </div>
+
+                <!-- Color scale bar -->
+                <div class="color-scale">
+                    <div class="color-scale-bar"></div>
+                    <div class="color-scale-labels">
+                        <span>-40%</span>
+                        <span>0%</span>
+                        <span>+40%</span>
+                    </div>
+                    <div class="color-scale-title">Sales tax vs. pre-pandemic</div>
                 </div>
 
                 <!-- Recovery stat will be added here by JS -->
@@ -37,7 +49,8 @@
     </div>
 
     <div class="note-container">
-        Map by Anusha Subramanian, sales tax data from <a href="https://data.sfgov.org" target="_blank">S.F. Open Data</a>.
+        Map by Anusha Subramanian, sales tax data from <a href="https://data.sfgov.org" target="_blank">S.F. Open
+            Data</a>.
     </div>
 
     <script src="https://pym.nprapps.org/pym.v1.min.js"></script>

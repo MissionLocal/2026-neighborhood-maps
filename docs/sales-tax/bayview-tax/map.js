@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   // DOM
   const infoBox = document.getElementById("info-box");
   const recoveryStatDiv = document.getElementById("recovery-stat");
+  const neighborhoodLegendLine = document.getElementById(
+    "neighborhood-legend-line"
+  );
+  const districtLegendLine = document.getElementById("district-legend-line");
 
   // Hide info box on load
   if (infoBox) infoBox.style.display = "none";
@@ -84,24 +88,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     outlineColor = fillColor;
 
+    // Update legend lines to match map color
+    if (neighborhoodLegendLine) {
+      neighborhoodLegendLine.style.borderTopColor = outlineColor;
+    }
+    if (districtLegendLine) {
+      districtLegendLine.style.borderTopColor = outlineColor;
+    }
+
     // Update legend with better reader-facing text
     const absPct = Math.abs(recoveryData.recovery_pct);
     let statusText;
 
     if (recoveryData.recovery_pct < 0) {
-      statusText = `Sales tax revenue is <strong>${absPct.toFixed(
+      statusText = `Sales tax revenue in <strong>${
+        recoveryData.latest_quarter
+      }</strong> is <strong>${absPct.toFixed(
         1
-      )}% below</strong> pre-pandemic levels (${
-        recoveryData.baseline_quarter
-      })`;
+      )}% below</strong> the same period in 2019`;
     } else if (recoveryData.recovery_pct > 0) {
-      statusText = `Sales tax revenue is <strong>${recoveryData.recovery_pct.toFixed(
+      statusText = `Sales tax revenue in <strong>${
+        recoveryData.latest_quarter
+      }</strong> is <strong>${recoveryData.recovery_pct.toFixed(
         1
-      )}% above</strong> pre-pandemic levels (${
-        recoveryData.baseline_quarter
-      })`;
+      )}% above</strong> the same period in 2019`;
     } else {
-      statusText = `Sales tax revenue has <strong>returned to</strong> pre-pandemic levels (${recoveryData.baseline_quarter})`;
+      statusText = `Sales tax revenue in <strong>${recoveryData.latest_quarter}</strong> has <strong>returned to</strong> the same period in 2019`;
     }
 
     recoveryStatDiv.innerHTML = statusText;
