@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       source: "neighborhood",
       paint: {
         "fill-color": fillColor,
-        "fill-opacity": 0.3,
+        "fill-opacity": 0.9,
       },
     });
 
