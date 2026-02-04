@@ -17,6 +17,7 @@ body {
     width: 100vw;
     max-width: 400px;
     margin: 10px auto;
+    overflow: hidden;
 }
 
 /* MOBILE-FIRST: map width matches screen, height = width (square) */
@@ -27,7 +28,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
 }
 
-/* legend */
+/* legend - compact, just lines */
 .legend {
     position: absolute;
     top: 14px;
@@ -38,16 +39,10 @@ body {
     box-shadow: 0 1px 2px rgba(0, 0, 0, .12);
     padding: 8px 10px;
     font-size: 11.5px;
-    line-height: 1.1;
+    line-height: 1.2;
     display: inline-block;
-    min-width: 180px;
-    max-width: 200px;
+    width: auto;
     pointer-events: none;
-}
-
-.legend .legend-title {
-    color: #333;
-    margin-bottom: 4px;
 }
 
 .legend-row {
@@ -58,6 +53,10 @@ body {
     margin-bottom: 4px;
 }
 
+.legend-row:last-child {
+    margin-bottom: 0;
+}
+
 .legend-line {
     width: 22px;
     height: 0;
@@ -66,47 +65,11 @@ body {
     flex-shrink: 0;
 }
 
-/* color scale */
-.color-scale {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid #e5e5e5;
-}
-
-.color-scale-bar {
-    height: 16px;
-    width: 120px;
-    background: linear-gradient(to right, #ed43e5 0%, #dddddd 50%, #efbe25 100%);
-    border-radius: 2px;
-    margin-bottom: 4px;
-    display: block;
-}
-
-.color-scale-labels {
-    display: flex;
-    justify-content: space-between;
-    width: 120px;
-    font-size: 10px;
-    color: #666;
-    margin-bottom: 3px;
-}
-
-.color-scale-title {
-    font-size: 10px;
-    color: #666;
-    width: 120px;
-}
-
-/* recovery stat - removed, using info box instead */
-.recovery-stat {
-    display: none;
-}
-
 /* info box */
 .info-box {
     position: absolute;
     left: 14px;
-    bottom: 14px;
+    bottom: 50px;
     z-index: 2;
     width: auto;
     max-width: 280px;
@@ -119,29 +82,7 @@ body {
     line-height: 1.4;
     color: #333;
     display: none;
-}
-
-a {
-    color: #666666;
-    text-decoration: underline;
-}
-
-/* DESKTOP OVERRIDES */
-@media (min-width: 769px) {
-
-    .map-container {
-        max-width: 520px;
-    }
-
-    .map {
-        max-width: 520px;
-        aspect-ratio: auto;
-        height: 400px;
-    }
-
-    .note-container {
-        max-width: 520px;
-    }
+    pointer-events: auto;
 }
 
 /* note below map */
@@ -155,8 +96,26 @@ a {
     color: #555;
 }
 
-.cta-strong {
-    font-weight: 600;
+a {
+    color: #666666;
+    text-decoration: underline;
+}
+
+/* DESKTOP OVERRIDES */
+@media (min-width: 769px) {
+    .map-container {
+        max-width: 520px;
+    }
+
+    .map {
+        max-width: 520px;
+        aspect-ratio: auto;
+        height: 400px;
+    }
+
+    .note-container {
+        max-width: 520px;
+    }
 }
 
 @media (max-width: 768px) {

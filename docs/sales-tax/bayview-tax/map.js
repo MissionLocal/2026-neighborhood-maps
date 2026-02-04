@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // DOM
   const infoBox = document.getElementById("info-box");
-  const recoveryStatDiv = document.getElementById("recovery-stat");
   const neighborhoodLegendLine = document.getElementById(
     "neighborhood-legend-line"
   );
@@ -36,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Helper to format quarter as human readable
   function formatQuarter(quarterStr) {
-    // quarterStr like "2025Q3"
     const year = quarterStr.substring(0, 4);
     const quarter = quarterStr.substring(5, 7);
     return `Q${quarter.replace("Q", "")} ${year}`;
@@ -57,7 +55,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const adjustedResponse = await fetch("../adjusted_sales_tax.csv");
     const adjustedText = await adjustedResponse.text();
     const adjustedRows = adjustedText.trim().split("\n");
-    const adjustedHeaders = adjustedRows[0].split(",");
 
     // Find Bayview row in adjusted data
     const bayviewAdjustedRow = adjustedRows.find((row) =>
@@ -79,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const masterRows = masterText.trim().split("\n");
     const masterHeaders = masterRows[0].split(",");
 
-    // Find the column name for latest quarter (e.g., "2025Q3")
+    // Find the column name for latest quarter
     const latestQuarterCol = recoveryData.latest_quarter;
     const colIndex = masterHeaders.findIndex(
       (h) => h.trim() === latestQuarterCol
@@ -131,19 +128,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       districtLegendLine.style.borderTopColor = outlineColor;
     }
 
-    // Build info box content
+    // Build info box - clean version with no divider, no "vs. pre-pandemic"
     if (actualRevenue && recoveryData) {
       const revenueFormatted = formatDollars(actualRevenue);
       const quarterFormatted = formatQuarter(recoveryData.latest_quarter);
       const sign = recoveryData.recovery_pct >= 0 ? "+" : "";
 
       infoBox.innerHTML = `
-                <div style="font-weight: 600; margin-bottom: 4px;">Bayview Hunters Point</div>
-                <div style="margin-bottom: 6px;">Sales tax revenue, ${quarterFormatted}: <strong>${revenueFormatted}</strong></div>
-                <div>Percent change from 2019: <strong>${sign}${recoveryData.recovery_pct.toFixed(
+        <div style="font-weight: 600; font-size: 13px; margin-bottom: 8px;">Sales tax recovery</div>
+        <div style="height: 16px; width: 180px; background: linear-gradient(to right, #ed43e5 0%, #dddddd 50%, #efbe25 100%); border-radius: 2px; margin-bottom: 4px;"></div>
+        <div style="display: flex; justify-content: space-between; width: 180px; font-size: 10px; color: #666; margin-bottom: 10px;">
+          <span>-40%</span>
+          <span>0%</span>
+          <span>+40%</span>
+        </div>
+        <div style="font-weight: 600; margin-bottom: 4px;">Bayview Hunters Point</div>
+        <div style="margin-bottom: 4px;">Sales tax revenue, ${quarterFormatted}: <strong>${revenueFormatted}</strong></div>
+        <div>Percent change from 2019: <strong>${sign}${recoveryData.recovery_pct.toFixed(
         0
       )}%</strong></div>
-            `;
+      `;
       infoBox.style.display = "block";
     }
   }
@@ -151,10 +155,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const map = new mapboxgl.Map({
     container: "map",
     style: "mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a",
-    center: [-122.431297, 37.773972],
+    center: [-122.431297, 37.733972],
     zoom: 10.5,
     maxBounds: [
-      [-122.6, 37.68],
+      [-122.6, 37.6],
       [-122.28, 37.88],
     ],
   });
@@ -189,7 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       source: "neighborhood",
       paint: {
         "fill-color": fillColor,
-        "fill-opacity": 0.9,
+        "fill-opacity": 0.8,
       },
     });
 
