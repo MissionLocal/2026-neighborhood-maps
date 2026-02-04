@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const neighborhoodLegendLine = document.getElementById(
     "neighborhood-legend-line"
   );
-  const districtLegendLine = document.getElementById("district-legend-line");
 
   // Helper function to interpolate between two colors
   function interpolateColor(color1, color2, factor) {
@@ -120,12 +119,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     outlineColor = fillColor;
 
-    // Update legend lines to match map color
+    // Update legend line to match map color
     if (neighborhoodLegendLine) {
       neighborhoodLegendLine.style.borderTopColor = outlineColor;
-    }
-    if (districtLegendLine) {
-      districtLegendLine.style.borderTopColor = outlineColor;
     }
 
     // Build info box - clean version with no divider, no "vs. pre-pandemic"
@@ -169,22 +165,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ---- GeoJSON paths ----
   const neighborhoodUrl = "bayview.geojson";
-  const districtUrl = "district.geojson";
 
-  const [neighborhoodGJ, districtGJ] = await Promise.all([
-    fetch(neighborhoodUrl).then((r) => r.json()),
-    fetch(districtUrl).then((r) => r.json()),
-  ]);
+  const neighborhoodGJ = await fetch(neighborhoodUrl).then((r) => r.json());
 
   map.on("load", () => {
     map.addSource("neighborhood", {
       type: "geojson",
       data: neighborhoodGJ,
-    });
-
-    map.addSource("district", {
-      type: "geojson",
-      data: districtGJ,
     });
 
     map.addLayer({
@@ -204,17 +191,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       paint: {
         "line-color": outlineColor,
         "line-width": 1.5,
-      },
-    });
-
-    map.addLayer({
-      id: "district-outline",
-      type: "line",
-      source: "district",
-      paint: {
-        "line-color": outlineColor,
-        "line-width": 1.5,
-        "line-dasharray": [3, 2],
       },
     });
 
