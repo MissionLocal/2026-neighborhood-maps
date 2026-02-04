@@ -9,6 +9,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   const neighborhoodLegendLine = document.getElementById(
     "neighborhood-legend-line"
   );
+  const chartPopup = document.getElementById("chart-popup");
+  const chartPopupBackdrop = document.querySelector(".chart-popup-backdrop");
+  const closePopupBtn = document.getElementById("close-popup");
+
+  // Popup controls
+  function openPopup() {
+    chartPopup.style.display = "block";
+  }
+
+  function closePopup() {
+    chartPopup.style.display = "none";
+  }
+
+  closePopupBtn.addEventListener("click", closePopup);
+
+  // Close popup when clicking backdrop
+  chartPopupBackdrop.addEventListener("click", closePopup);
 
   // Helper function to interpolate between two colors
   function interpolateColor(color1, color2, factor) {
@@ -124,7 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       neighborhoodLegendLine.style.borderTopColor = outlineColor;
     }
 
-    // Build info box - clean version with no divider, no "vs. pre-pandemic"
+    // Build info box with everything in one box + button at bottom
     if (actualRevenue && recoveryData) {
       const revenueFormatted = formatDollars(actualRevenue);
       const quarterFormatted = formatQuarter(recoveryData.latest_quarter);
@@ -140,11 +157,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
         <div style="font-weight: 600; margin-bottom: 4px;">Bayview Hunters Point</div>
         <div style="margin-bottom: 4px;">Sales tax revenue, ${quarterFormatted}: <strong>${revenueFormatted}</strong></div>
-        <div>Percent change from 2019: <strong>${sign}${recoveryData.recovery_pct.toFixed(
+        <div style="margin-bottom: 8px;">Percent change from 2019: <strong>${sign}${recoveryData.recovery_pct.toFixed(
         0
       )}%</strong></div>
+        <button class="chart-button" id="view-chart-btn">View sales tax history →</button>
       `;
       infoBox.style.display = "block";
+
+      // Add click handler to button
+      document
+        .getElementById("view-chart-btn")
+        .addEventListener("click", openPopup);
     }
   }
 
@@ -166,7 +189,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ---- GeoJSON paths ----
   const neighborhoodUrl = "bayview.geojson";
 
-  const neighborhoodGJ = await fetch(neighborhoodUrl).then((r) => r.json());
+  const neighborhoodResponse = await fetch(neighborhoodUrl);
+  const neighborhoodGJ = await neighborhoodResponse.json();
 
   map.on("load", () => {
     map.addSource("neighborhood", {

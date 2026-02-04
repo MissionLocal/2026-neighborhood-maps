@@ -85,6 +85,113 @@ body {
     pointer-events: auto;
 }
 
+/* chart button - grey */
+.chart-button {
+    display: inline-block;
+    margin-top: 0;
+    padding: 6px 10px;
+    background: #dddddd;
+    color: #333;
+    border: none;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    text-decoration: none;
+}
+
+.chart-button:hover {
+    background: #c5c5c5;
+}
+
+/* Chart popup - contained within map */
+.chart-popup {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+.chart-popup-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.chart-popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 90%;
+    height: 85%;
+    max-width: 500px;
+    border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-popup {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    line-height: 28px;
+    border-radius: 50%;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.close-popup:hover {
+    color: #000;
+    background: #fff;
+}
+
+.chart-container {
+    padding: 50px 15px 15px 15px;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container iframe {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .chart-popup-content {
+        width: 95%;
+        height: 90%;
+    }
+
+    .chart-container {
+        padding: 45px 10px 10px 10px;
+    }
+}
+
 /* note below map */
 .note-container {
     max-width: 400px;
@@ -115,6 +222,10 @@ a {
 
     .note-container {
         max-width: 520px;
+    }
+
+    .chart-popup-content {
+        max-width: 480px;
     }
 }
 
