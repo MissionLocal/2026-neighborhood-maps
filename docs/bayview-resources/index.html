@@ -12,134 +12,98 @@
   <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
 
   <style>
-    :root {
-      --school: #46c134;
-      --health: #57a4ea;
+    :root{
+      --school:  #46c134;
+      --health:  #57a4ea;
       --library: #f67cf6;
-      --services: #efbe25;
-      --police: #f36e57;
+      --services:#efbe25;
+      --police:  #f36e57;
     }
 
-    /* base */
-    body { margin:0; padding:0 0 20px 0; font-family:'Barlow',sans-serif; background:#fff; }
+    body{ margin:0; padding:0 0 20px 0; font-family:'Barlow',sans-serif; background:#fff; }
+    .cont{ display:flex; justify-content:center; align-items:center; }
 
-    /* layout */
-    .cont { display:flex; justify-content:center; align-items:center; }
-    .map-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 400px;   /* mobile default */
-      margin: 10px auto;
+    .map-wrapper{
+      position:relative;
+      width:100%;
+      max-width:400px;       /* mobile default */
+      margin:10px auto;
     }
 
-    /* Desktop: wider map like your screenshot */
-    @media (min-width: 900px) {
-      .map-wrapper { max-width: 900px; }
+    /* wider on desktop */
+    @media (min-width: 900px){
+      .map-wrapper{ max-width: 900px; }
     }
 
-    /* filter label */
-    .filter-label {
+    .filter-label{
       text-align:center;
-      font-size: 15px;
-      margin: 6px 0 8px;
+      font-size: 13px;       /* smaller like earlier */
+      margin: 6px 0 6px;
     }
 
-    /* buttons */
+    /* BUTTONS — same size + smaller like earlier */
     #filters{
       display:flex;
       flex-wrap:wrap;
-      gap: 10px;
+      gap: 8px;
       justify-content:center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     #filters button{
-      font-family:'Barlow', sans-serif;
-      font-size: 16px;
-      padding: 10px 16px;
+      font-family:'Barlow',sans-serif;
+      font-size: 14px;           /* smaller */
+      padding: 8px 12px;         /* smaller */
       border-radius: 4px;
-      background: #fff;
-      cursor: pointer;
+      background:#fff;
+      cursor:pointer;
       border: 2px solid;
       box-shadow: 0 2px 4px rgba(0,0,0,.12);
       transition: transform .15s ease, background .15s ease;
       line-height: 1;
-    }
-
-    #filters button:hover { transform: translateY(-1px); }
-
-    /* Default outline colors */
-    #filters button[data-category="School"] {
-      border-color: var(--school);
-      color: var(--school);
-    }
-    #filters button[data-category="Health care"] {
-      border-color: var(--health);
-      color: var(--health);
-    }
-    #filters button[data-category="Library"] {
-      border-color: var(--library);
-      color: var(--library);
-    }
-    #filters button[data-category="Services"] {
-      border-color: var(--services);
-      color: var(--services);
-    }
-    #filters button[data-category="Police station"] {
-      border-color: var(--police);
-      color: var(--police);
-    }
-
-    /* Active state — filled, lower opacity */
-    #filters button.active[data-category="School"] { background: rgba(70,193,52,.18); }
-    #filters button.active[data-category="Health care"] { background: rgba(87,164,234,.18); }
-    #filters button.active[data-category="Library"] { background: rgba(246,124,246,.18); }
-    #filters button.active[data-category="Services"] { background: rgba(239,190,37,.22); }
-    #filters button.active[data-category="Police station"] { background: rgba(243,110,87,.18); }
-
-    /* Clear selection button */
-    #clear-filters{
-      display:none;
-      margin: 10px auto 12px;
-      padding: 10px 16px;
-      font-size: 16px;
-      border-radius: 4px;
-      border: 2px solid var(--library);
-      background: rgba(246,124,246,.18);
-      color: #000;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0,0,0,.12);
+      min-width: 132px;          /* forces same visual size */
       text-align: center;
-      width: fit-content;
+      white-space: nowrap;
     }
 
-    /* map stage holds the map + popup so popup hugs map bottom edge */
-    .map-stage{
-      position: relative;
-      width: 100%;
-    }
+    #filters button:hover{ transform: translateY(-1px); }
+
+    /* outline colors */
+    #filters button[data-category="School"]{ border-color:var(--school); color:var(--school); }
+    #filters button[data-category="Health care"]{ border-color:var(--health); color:var(--health); }
+    #filters button[data-category="Library"]{ border-color:var(--library); color:var(--library); }
+    #filters button[data-category="Services"]{ border-color:var(--services); color:var(--services); }
+    #filters button[data-category="Police station"]{ border-color:var(--police); color:var(--police); }
+
+    /* active fill (low opacity) */
+    #filters button.active[data-category="School"]{ background: rgba(70,193,52,.18); }
+    #filters button.active[data-category="Health care"]{ background: rgba(87,164,234,.18); }
+    #filters button.active[data-category="Library"]{ background: rgba(246,124,246,.18); }
+    #filters button.active[data-category="Services"]{ background: rgba(239,190,37,.22); }
+    #filters button.active[data-category="Police station"]{ background: rgba(243,110,87,.18); }
+
+    .map-stage{ position:relative; width:100%; }
 
     #map{
       width:100%;
-      height: 500px;
+      height:500px;
       box-shadow:0 4px 8px rgba(0,0,0,.1);
     }
-
     @media (min-width: 900px){
       #map{ height: 600px; }
     }
 
-    /* INFO CARD (matches your turnout map) */
+    /* INFO CARD */
     #custom-popup{
       position:absolute;
       left:50%;
       transform:translateX(-50%);
       bottom:14px;
-      z-index: 10;
+      z-index:10;
 
       width: calc(100% - 12px);
       max-width: 460px;
-      box-sizing: border-box;
+      box-sizing:border-box;
 
       padding: 8px 10px;
       background: rgba(255,255,255,.98);
@@ -148,23 +112,18 @@
 
       font-size: 13px;
       line-height: 1.35;
-
       max-height: 40%;
-      overflow-y: auto;
+      overflow-y:auto;
 
-      display: none;
+      display:none;
     }
-
-    #popup-content div { margin-bottom: 6px; }
-
+    #popup-content div{ margin-bottom:6px; }
     #popup-content hr{
       border:0;
       border-top:1px solid rgba(0,0,0,.12);
       margin:8px 0;
     }
-
     #popup-content strong{ font-weight:600; }
-
     #popup-content a{
       color:#555;
       text-decoration: underline;
@@ -176,7 +135,7 @@
       text-align:center;
       font-size: 11.5px;
       color:#555;
-      margin-top: 10px;
+      margin-top:10px;
     }
   </style>
 </head>
@@ -184,7 +143,6 @@
 <body>
   <div class="cont">
     <div class="map-wrapper">
-
       <p class="filter-label"><em>Click to filter by category</em></p>
 
       <div id="filters">
@@ -195,15 +153,12 @@
         <button data-category="Police station">Police Station</button>
       </div>
 
-      <div id="clear-filters">Clear selection</div>
-
       <div class="map-stage">
         <div id="map"></div>
         <div id="custom-popup"><div id="popup-content"></div></div>
       </div>
 
       <p class="credit">Source: Data compiled by Marina Newman. Map by Xueer Lu.</p>
-
     </div>
   </div>
 
@@ -223,14 +178,14 @@
       center: [-122.3854085, 37.7318363],
       zoom: 11.6,
       maxBounds: [
-        [-122.432, 37.695],   // southwest
-        [-122.340, 37.765]    // northeast
+        [-122.432, 37.695],
+        [-122.340, 37.765]
       ]
     });
 
     map.on('load', () => {
 
-      // Bayview boundary
+      // Bayview boundary (FILL ONLY — outline removed)
       map.addSource('bayview', {
         type: 'geojson',
         data: 'neighborhoods.geojson'
@@ -244,17 +199,6 @@
         paint: {
           'fill-color': '#efbe25',
           'fill-opacity': 0.07
-        }
-      });
-
-      map.addLayer({
-        id: 'bayview-outline',
-        type: 'line',
-        source: 'bayview',
-        filter: ['==', ['get', 'nhood'], 'Bayview Hunters Point'],
-        paint: {
-          'line-color': '#efbe25',
-          'line-width': 1.5
         }
       });
 
@@ -284,35 +228,30 @@
         }
       });
 
-      // Filtering
+      // Filtering (no clear button)
       const activeCategories = new Set();
       const buttons = document.querySelectorAll('#filters button');
-      const clearBtn = document.getElementById('clear-filters');
 
-      function updateFilter() {
-        if (activeCategories.size === 0) {
+      function updateFilter(){
+        if(activeCategories.size === 0){
           map.setFilter('resources', null);
-          clearBtn.style.display = 'none';
           return;
         }
-
         map.setFilter('resources', [
           'in',
-          ['get', 'Category'],
+          ['get','Category'],
           ['literal', Array.from(activeCategories)]
         ]);
-
-        clearBtn.style.display = 'block';
       }
 
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
+      buttons.forEach(btn=>{
+        btn.addEventListener('click',()=>{
           const cat = btn.dataset.category;
 
-          if (activeCategories.has(cat)) {
+          if(activeCategories.has(cat)){
             activeCategories.delete(cat);
             btn.classList.remove('active');
-          } else {
+          }else{
             activeCategories.add(cat);
             btn.classList.add('active');
           }
@@ -322,16 +261,8 @@
         });
       });
 
-      clearBtn.addEventListener('click', () => {
-        activeCategories.clear();
-        buttons.forEach(b => b.classList.remove('active'));
-        map.setFilter('resources', null);
-        clearBtn.style.display = 'none';
-        sendHeight();
-      });
-
-      // Click point -> show info card (no close button)
-      map.on('click', 'resources', (e) => {
+      // Click point -> show info card
+      map.on('click','resources',(e)=>{
         const p = e.features[0].properties;
 
         let content = `<div><strong>${p['Item'] || ''}</strong></div>`;
@@ -344,7 +275,7 @@
 
         if (p['Phone']) {
           const phoneRaw = String(p['Phone']);
-          const phoneTel = phoneRaw.replace(/[^\d+]/g, '');
+          const phoneTel = phoneRaw.replace(/[^\d+]/g,'');
           content += `<div><strong>Phone:</strong> <a href="tel:${phoneTel}">${phoneRaw}</a></div>`;
         }
 
@@ -352,21 +283,19 @@
 
         document.getElementById('popup-content').innerHTML = content;
         document.getElementById('custom-popup').style.display = 'block';
-
         sendHeight();
       });
 
       // Click elsewhere -> hide info card
       map.on('click', (e) => {
         const feats = map.queryRenderedFeatures(e.point, { layers: ['resources'] });
-        if (feats.length) return; // click was on a point
-
+        if (feats.length) return;
         document.getElementById('custom-popup').style.display = 'none';
         sendHeight();
       });
 
-      map.on('mouseenter', 'resources', () => { map.getCanvas().style.cursor = 'pointer'; });
-      map.on('mouseleave', 'resources', () => { map.getCanvas().style.cursor = ''; });
+      map.on('mouseenter','resources',()=>{ map.getCanvas().style.cursor='pointer'; });
+      map.on('mouseleave','resources',()=>{ map.getCanvas().style.cursor=''; });
 
       sendHeight();
     });
