@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <title>Bayview resources</title>
@@ -12,210 +11,167 @@
   <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
 
   <style>
-    :root {
-      --school: #46c134;
-      --health: #57a4ea;
-      --library: #f67cf6;
-      --services: #efbe25;
-      --police: #f36e57;
+    :root{
+      --school:#46c134;
+      --health:#57a4ea;
+      --library:#f67cf6;
+      --services:#efbe25;
+      --police:#f36e57;
     }
 
-    body {
-      margin: 0;
-      padding: 0 0 20px 0;
-      font-family: 'Barlow', sans-serif;
-      background: #fff;
+    body{
+      margin:0;
+      padding:0 0 20px 0;
+      font-family:'Barlow', sans-serif;
+      background:#fff;
     }
 
-    .cont {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .cont{
+      display:flex;
+      justify-content:center;
+      align-items:center;
     }
 
-    .map-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      margin: 10px auto;
+    .map-wrapper{
+      position:relative;
+      width:100%;
+      max-width:400px;
+      margin:10px auto;
     }
 
-    /* wider desktop */
-    @media (min-width:400px) {
-      .map-wrapper {
-        max-width: 900px;
-      }
+    @media (min-width:900px){
+      .map-wrapper{ max-width:900px; }
     }
 
-    .filter-label {
-      text-align: center;
-      font-size: 14px;
-      margin: 4px 0 6px;
+    .filter-label{
+      text-align:center;
+      font-size:14px;
+      margin:4px 0 6px;
     }
 
-    #filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-bottom: 10px;
+    /* shows only when filters active (toggled in JS) */
+    #clear-wrap{
+      display:none;
     }
 
-    #filters button {
-      font-family: 'Barlow', sans-serif;
-      font-size: 14px;
-      padding: 6px 6px;
-      border-radius: 2px;
-      background: #fff;
-      border: 2px solid;
-      /* color will be set below */
-      cursor: pointer;
-      line-height: 1;
-      white-space: nowrap;
-      transition: all .15s ease;
+    .slash{
+      color:#666;
+    }
+
+    /* underline only the words */
+    #clear-link{
+      color:#666;
+      cursor:pointer;
+      border-bottom:1px solid currentColor;
+      padding-bottom:1px;
+    }
+
+    #clear-link:hover{
+      color:#111;
+    }
+
+    #filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+      margin-bottom:10px;
+    }
+
+    #filters button{
+      font-family:'Barlow', sans-serif;
+      font-size:14px;
+      padding:6px 6px;
+      border-radius:2px;
+      background:#fff;
+      border:2px solid; /* color set per category */
+      cursor:pointer;
+      line-height:1;
+      white-space:nowrap;
+      transition:all .15s ease;
     }
 
     /* DEFAULT = colored outline + colored text */
-
-    #filters button[data-category="School"] {
-      border-color: #46c134;
-      color: #46c134;
-    }
-
-    #filters button[data-category="Health care"] {
-      border-color: #57a4ea;
-      color: #57a4ea;
-    }
-
-    #filters button[data-category="Library"] {
-      border-color: #f67cf6;
-      color: #f67cf6;
-    }
-
-    #filters button[data-category="Services"] {
-      border-color: #efbe25;
-      color: #efbe25;
-    }
-
-    #filters button[data-category="Police station"] {
-      border-color: #f36e57;
-      color: #f36e57;
-    }
+    #filters button[data-category="School"]{ border-color:var(--school); color:var(--school); }
+    #filters button[data-category="Health care"]{ border-color:var(--health); color:var(--health); }
+    #filters button[data-category="Library"]{ border-color:var(--library); color:var(--library); }
+    #filters button[data-category="Services"]{ border-color:var(--services); color:var(--services); }
+    #filters button[data-category="Police station"]{ border-color:var(--police); color:var(--police); }
 
     /* ACTIVE = subtle fill */
+    #filters button.active[data-category="School"]{ background: rgba(70,193,52,.15); }
+    #filters button.active[data-category="Health care"]{ background: rgba(87,164,234,.15); }
+    #filters button.active[data-category="Library"]{ background: rgba(246,124,246,.15); }
+    #filters button.active[data-category="Services"]{ background: rgba(239,190,37,.18); }
+    #filters button.active[data-category="Police station"]{ background: rgba(243,110,87,.15); }
 
-    #filters button.active[data-category="School"] {
-      background: rgba(70, 193, 52, .15);
-    }
-
-    #filters button.active[data-category="Health care"] {
-      background: rgba(87, 164, 234, .15);
-    }
-
-    #filters button.active[data-category="Library"] {
-      background: rgba(246, 124, 246, .15);
-    }
-
-    #filters button.active[data-category="Services"] {
-      background: rgba(239, 190, 37, .18);
-    }
-
-    #filters button.active[data-category="Police station"] {
-      background: rgba(243, 110, 87, .15);
-    }
-
-    /* subtle hover */
-    #filters button:hover {
+    #filters button:hover{
       transform: translateY(-1px);
     }
 
-
-    .map-stage {
-      position: relative;
-      width: 100%;
+    .map-stage{
+      position:relative;
+      width:100%;
     }
 
-    #map {
-      width: 100%;
-      height: 500px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    #map{
+      width:100%;
+      height:500px;
+      box-shadow:0 4px 8px rgba(0,0,0,.1);
     }
 
-    @media (min-width:900px) {
-      #map {
-        height: 600px;
-      }
+    @media (min-width:900px){
+      #map{ height:600px; }
     }
 
     /* INFO CARD */
-    #custom-popup {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 14px;
-      z-index: 10;
+    #custom-popup{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:14px;
+      z-index:10;
 
-      width: calc(100% - 12px);
-      max-width: 460px;
-      box-sizing: border-box;
+      width:calc(100% - 12px);
+      max-width:460px;
+      box-sizing:border-box;
 
-      padding: 8px 10px;
-      background: rgba(255, 255, 255, .98);
-      border-radius: 2px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, .10);
+      padding:8px 10px;
+      background:rgba(255,255,255,.98);
+      border-radius:2px;
+      box-shadow:0 2px 4px rgba(0,0,0,.10);
 
-      font-size: 13px;
-      line-height: 1.35;
-      max-height: 40%;
-      overflow-y: auto;
+      font-size:13px;
+      line-height:1.35;
+      max-height:40%;
+      overflow-y:auto;
 
-      display: none;
+      display:none;
     }
 
-    #popup-content div {
-      margin-bottom: 6px;
+    #popup-content div{ margin-bottom:6px; }
+
+    #popup-content hr{
+      border:0;
+      border-top:1px solid rgba(0,0,0,.12);
+      margin:8px 0;
     }
 
-    #popup-content hr {
-      border: 0;
-      border-top: 1px solid rgba(0, 0, 0, .12);
-      margin: 8px 0;
+    #popup-content strong{ font-weight:600; }
+
+    #popup-content a{
+      color:#555;
+      text-decoration:underline;
+      text-underline-offset:2px;
     }
 
-    #popup-content strong {
-      font-weight: 600;
-    }
+    #popup-content a:hover{ color:#111; }
 
-    #popup-content a {
-      color: #555;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    #popup-content a:hover {
-      color: #111;
-    }
-
-    .credit {
-      text-align: center;
-      font-size: 12px;
-      color: #555;
-      margin-top: 10px;
-    }
-
-    #clear-link {
-      font-family: 'Barlow', sans-serif;
-      font-size: 14px;
-      color: #666;
-      cursor: pointer;
-      align-self: center;
-      display: none;
-      /* hidden by default */
-    }
-
-    #clear-link:hover {
-      text-decoration: underline;
-      color: #111;
+    .credit{
+      text-align:center;
+      font-size:12px;
+      color:#555;
+      margin-top:10px;
     }
   </style>
 </head>
@@ -224,7 +180,13 @@
   <div class="cont">
     <div class="map-wrapper">
 
-      <p class="filter-label"><em>Click to filter by category</em></p>
+      <p class="filter-label">
+        <em>Click to filter by category</em>
+        <span id="clear-wrap">
+          <span class="slash"> / </span>
+          <span id="clear-link" role="button" tabindex="0">Clear selection</span>
+        </span>
+      </p>
 
       <div id="filters">
         <button data-category="School">School</button>
@@ -232,28 +194,25 @@
         <button data-category="Library">Library</button>
         <button data-category="Services">Services</button>
         <button data-category="Police station">Police Station</button>
-        <span id="clear-link">Clear</span>
-
       </div>
 
       <div class="map-stage">
         <div id="map"></div>
-        <div id="custom-popup">
-          <div id="popup-content"></div>
-        </div>
+        <div id="custom-popup"><div id="popup-content"></div></div>
       </div>
 
-      <p class="credit">Source: Data compiled by Marina Newman. Map by Xueer Lu & Kelly Waldron.</p>
-
+      <p class="credit">Source: Data compiled by Marina Newman. Map by Xueer Lu &amp; Kelly Waldron.</p>
     </div>
   </div>
 
   <script>
+    // Pym
     const pymChild = new pym.Child();
-    function sendHeight() { pymChild.sendHeight(); }
+    function sendHeight(){ pymChild.sendHeight(); }
     window.addEventListener('load', sendHeight);
     window.addEventListener('resize', sendHeight);
 
+    // Mapbox
     mapboxgl.accessToken = 'pk.eyJ1IjoibWxub3ciLCJhIjoiY21scG5hY2V5MHdwODNkcHRxb2Nhc2N5NyJ9.Ccmhr38K26uGXhVqe1yepA';
 
     const map = new mapboxgl.Map({
@@ -269,11 +228,11 @@
 
     map.on('load', () => {
 
-      /* Bayview fill only (outline removed) */
-      // map.addSource('bayview', {
-      //   type: 'geojson',
-      //   data: 'neighborhoods.geojson'
-      // });
+      // Bayview fill (no outline)
+      map.addSource('bayview', {
+        type: 'geojson',
+        data: 'neighborhoods.geojson'
+      });
 
       map.addLayer({
         id: 'bayview-fill',
@@ -286,7 +245,7 @@
         }
       });
 
-      /* Points */
+      // Points
       map.addSource('locations', {
         type: 'geojson',
         data: 'bayview-resources.geojson'
@@ -312,54 +271,62 @@
         }
       });
 
-      /* Filtering */
-const activeCategories = new Set();
-const buttons = document.querySelectorAll('#filters button');
-const clearLink = document.getElementById('clear-link');
+      // Filtering
+      const activeCategories = new Set();
+      const buttons = document.querySelectorAll('#filters button');
+      const clearWrap = document.getElementById('clear-wrap');
+      const clearLink = document.getElementById('clear-link');
 
-function updateFilter(){
-  if(activeCategories.size === 0){
-    map.setFilter('resources', null);
-    clearLink.style.display = 'none';
-    return;
-  }
+      function updateFilter(){
+        if(activeCategories.size === 0){
+          map.setFilter('resources', null);
+          clearWrap.style.display = 'none';
+          return;
+        }
 
-  map.setFilter('resources',[
-    'in',
-    ['get','Category'],
-    ['literal',Array.from(activeCategories)]
-  ]);
+        map.setFilter('resources', [
+          'in',
+          ['get','Category'],
+          ['literal', Array.from(activeCategories)]
+        ]);
 
-  clearLink.style.display = 'inline';
-}
+        clearWrap.style.display = 'inline';
+      }
 
-buttons.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const cat = btn.dataset.category;
+      function clearAll(){
+        activeCategories.clear();
+        buttons.forEach(b => b.classList.remove('active'));
+        map.setFilter('resources', null);
+        clearWrap.style.display = 'none';
+        sendHeight();
+      }
 
-    if(activeCategories.has(cat)){
-      activeCategories.delete(cat);
-      btn.classList.remove('active');
-    } else {
-      activeCategories.add(cat);
-      btn.classList.add('active');
-    }
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const cat = btn.dataset.category;
 
-    updateFilter();
-    sendHeight();
-  });
-});
+          if(activeCategories.has(cat)){
+            activeCategories.delete(cat);
+            btn.classList.remove('active');
+          } else {
+            activeCategories.add(cat);
+            btn.classList.add('active');
+          }
 
-clearLink.addEventListener('click',()=>{
-  activeCategories.clear();
-  buttons.forEach(b=>b.classList.remove('active'));
-  map.setFilter('resources', null);
-  clearLink.style.display = 'none';
-  sendHeight();
-});
+          updateFilter();
+          sendHeight();
+        });
+      });
 
+      clearLink.addEventListener('click', clearAll);
+      clearLink.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          clearAll();
+        }
+      });
 
-      /* Info card */
+      // Info card
       map.on('click', 'resources', (e) => {
         const p = e.features[0].properties;
 
@@ -384,6 +351,7 @@ clearLink.addEventListener('click',()=>{
         sendHeight();
       });
 
+      // Click elsewhere -> hide info card
       map.on('click', (e) => {
         const feats = map.queryRenderedFeatures(e.point, { layers: ['resources'] });
         if (feats.length) return;
@@ -398,5 +366,4 @@ clearLink.addEventListener('click',()=>{
     });
   </script>
 </body>
-
 </html>
