@@ -12,118 +12,150 @@
   <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
 
   <style>
-    body { margin:0; padding:0 0 20px 0; font-family:'Barlow',sans-serif; }
+    :root {
+      --school: #46c134;
+      --health: #57a4ea;
+      --library: #f67cf6;
+      --services: #efbe25;
+      --police: #f36e57;
+    }
 
+    /* base */
+    body { margin:0; padding:0 0 20px 0; font-family:'Barlow',sans-serif; background:#fff; }
+
+    /* layout */
     .cont { display:flex; justify-content:center; align-items:center; }
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 400px;   /* mobile default */
+      margin: 10px auto;
+    }
 
-.map-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 400px;   /* mobile default */
-  margin: 10px auto;
-}
+    /* Desktop: wider map like your screenshot */
+    @media (min-width: 900px) {
+      .map-wrapper { max-width: 900px; }
+    }
 
-/* Desktop */
-@media (min-width: 400px) {
-  .map-wrapper {
-    max-width: 600px;   /* ← change this to whatever width you want */
-  }
-}
+    /* filter label */
+    .filter-label {
+      text-align:center;
+      font-size: 15px;
+      margin: 6px 0 8px;
+    }
 
+    /* buttons */
+    #filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      justify-content:center;
+      margin-bottom: 12px;
+    }
 
-    #map {
+    #filters button{
+      font-family:'Barlow', sans-serif;
+      font-size: 16px;
+      padding: 10px 16px;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      border: 2px solid;
+      box-shadow: 0 2px 4px rgba(0,0,0,.12);
+      transition: transform .15s ease, background .15s ease;
+      line-height: 1;
+    }
+
+    #filters button:hover { transform: translateY(-1px); }
+
+    /* Default outline colors */
+    #filters button[data-category="School"] {
+      border-color: var(--school);
+      color: var(--school);
+    }
+    #filters button[data-category="Health care"] {
+      border-color: var(--health);
+      color: var(--health);
+    }
+    #filters button[data-category="Library"] {
+      border-color: var(--library);
+      color: var(--library);
+    }
+    #filters button[data-category="Services"] {
+      border-color: var(--services);
+      color: var(--services);
+    }
+    #filters button[data-category="Police station"] {
+      border-color: var(--police);
+      color: var(--police);
+    }
+
+    /* Active state — filled, lower opacity */
+    #filters button.active[data-category="School"] { background: rgba(70,193,52,.18); }
+    #filters button.active[data-category="Health care"] { background: rgba(87,164,234,.18); }
+    #filters button.active[data-category="Library"] { background: rgba(246,124,246,.18); }
+    #filters button.active[data-category="Services"] { background: rgba(239,190,37,.22); }
+    #filters button.active[data-category="Police station"] { background: rgba(243,110,87,.18); }
+
+    /* Clear selection button */
+    #clear-filters{
+      display:none;
+      margin: 10px auto 12px;
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 2px solid var(--library);
+      background: rgba(246,124,246,.18);
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,.12);
+      text-align: center;
+      width: fit-content;
+    }
+
+    /* map stage holds the map + popup so popup hugs map bottom edge */
+    .map-stage{
+      position: relative;
+      width: 100%;
+    }
+
+    #map{
       width:100%;
-      height:500px;
+      height: 500px;
       box-shadow:0 4px 8px rgba(0,0,0,.1);
     }
 
-    .filter-label {
-      text-align:center;
-      font-size:13px;
-      margin:6px 0 4px;
-    }
-
-    #filters {
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      justify-content:center;
-      margin-bottom:8px;
-    }
-
-    #filters button {
-      font-family:'Barlow',sans-serif;
-      font-size:12px;
-      padding:4px 8px;
-      border:1px solid #ddd;
-      background:#fff;
-      cursor:pointer;
-    }
-
-    #filters button.active {
-      background:#eee;
-    }
-
-    #clear-filters {
-      text-align:center;
-      font-size:12px;
-      color:#555;
-      cursor:pointer;
-      margin-bottom:6px;
-      display:none;
-    }
-
-    .credit {
-      text-align:center;
-      font-size:11px;
-      color:#555;
-      margin-top:8px;
+    @media (min-width: 900px){
+      #map{ height: 600px; }
     }
 
     /* INFO CARD (matches your turnout map) */
-/* stage that matches the map box exactly */
-.map-stage{
-  position: relative;
-  width: 100%;
-}
+    #custom-popup{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:14px;
+      z-index: 10;
 
-/* keep map sizing as-is */
-#map{
-  width: 100%;
-  height: 500px;                 /* or whatever you use */
-  box-shadow: 0 4px 8px rgba(0,0,0,.1);
-}
+      width: calc(100% - 12px);
+      max-width: 460px;
+      box-sizing: border-box;
 
-/* info card positioned relative to the map box */
-#custom-popup{
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 14px;                  /* now this is the map bottom */
-  z-index: 10;
+      padding: 8px 10px;
+      background: rgba(255,255,255,.98);
+      border-radius: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,.10);
 
-  width: calc(100% - 12px);
-  max-width: 460px;
-  box-sizing: border-box;
+      font-size: 13px;
+      line-height: 1.35;
 
-  padding: 8px 10px;
-  background: rgba(255,255,255,.98);
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.10);
+      max-height: 40%;
+      overflow-y: auto;
 
-  font-family: 'Barlow', sans-serif;
-  font-size: 13px;
-  line-height: 1.35;
+      display: none;
+    }
 
-  max-height: 40%;
-  overflow-y: auto;
-
-  display: none;
-}
-
-
-
-    #popup-content div { margin-bottom:6px; }
+    #popup-content div { margin-bottom: 6px; }
 
     #popup-content hr{
       border:0;
@@ -135,170 +167,209 @@
 
     #popup-content a{
       color:#555;
-      text-decoration:underline;
-      text-underline-offset:2px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
-
     #popup-content a:hover{ color:#111; }
 
-    @media (max-width:768px){
-      .map-wrapper{ max-width:400px; }
-      #map{ height:500px; }
+    .credit{
+      text-align:center;
+      font-size: 11.5px;
+      color:#555;
+      margin-top: 10px;
     }
   </style>
 </head>
 
 <body>
+  <div class="cont">
+    <div class="map-wrapper">
 
-<div class="cont">
-  <div class="map-wrapper">
+      <p class="filter-label"><em>Click to filter by category</em></p>
 
-    <p class="filter-label"><em>Click to filter by category</em></p>
+      <div id="filters">
+        <button data-category="School">School</button>
+        <button data-category="Health care">Health care</button>
+        <button data-category="Library">Library</button>
+        <button data-category="Services">Services</button>
+        <button data-category="Police station">Police Station</button>
+      </div>
 
-    <div id="filters">
-      <button data-category="School">School</button>
-      <button data-category="Health care">Health care</button>
-      <button data-category="Library">Library</button>
-      <button data-category="Services">Services</button>
-      <button data-category="Police station">Police Station</button>
+      <div id="clear-filters">Clear selection</div>
+
+      <div class="map-stage">
+        <div id="map"></div>
+        <div id="custom-popup"><div id="popup-content"></div></div>
+      </div>
+
+      <p class="credit">Source: Data compiled by Marina Newman. Map by Xueer Lu.</p>
+
     </div>
-
-    <div id="clear-filters">× remove filters</div>
-
-    <div class="map-stage">
-  <div id="map"></div>
-  <div id="custom-popup"><div id="popup-content"></div></div>
-</div>
-
-<p class="credit">Source: Data compiled by Marina Newman. Map by Xueer Lu.</p>
-
-
   </div>
-</div>
 
-<script>
-mapboxgl.accessToken = 'pk.eyJ1IjoibWxub3ciLCJhIjoiY21scG5hY2V5MHdwODNkcHRxb2Nhc2N5NyJ9.Ccmhr38K26uGXhVqe1yepA';
+  <script>
+    // Pym
+    const pymChild = new pym.Child();
+    function sendHeight(){ pymChild.sendHeight(); }
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
 
-const pymChild = new pym.Child();
-function sendHeight(){ pymChild.sendHeight(); }
+    // Mapbox
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWxub3ciLCJhIjoiY21kNmw1aTAyMDFkbTJqb3Z2dTN0YzRjMyJ9.4abRTnHdhMI-RE48dHNtYw';
 
-const map = new mapboxgl.Map({
-  container: 'map',
-  style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
-  center: [-122.3854085, 37.7318363],
-  zoom: 11.6,
-  maxBounds: [
-    [-122.432, 37.695],
-    [-122.340, 37.765]
-  ]
-});
-
-map.on('load', () => {
-
-  map.addSource('locations', {
-    type: 'geojson',
-    data: './bayview-resources.geojson'
-  });
-
-  map.addLayer({
-    id: 'resources',
-    type: 'circle',
-    source: 'locations',
-    paint: {
-      'circle-radius': 8,
-      'circle-opacity': 0.9,
-      'circle-color': [
-        'match',
-        ['get','Category'],
-        'School','#46c134',
-        'Health care','#57a4ea',
-        'Library','#f67cf6',
-        'Services','#efbe25',
-        'Police station','#f36e57',
-        '#cccccc'
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
+      center: [-122.3854085, 37.7318363],
+      zoom: 11.6,
+      maxBounds: [
+        [-122.432, 37.695],   // southwest
+        [-122.340, 37.765]    // northeast
       ]
-    }
-  });
-
-  const activeCategories = new Set();
-  const buttons = document.querySelectorAll('#filters button');
-  const clearBtn = document.getElementById('clear-filters');
-
-  function updateFilter(){
-    if(activeCategories.size===0){
-      map.setFilter('resources', null);
-      clearBtn.style.display='none';
-      return;
-    }
-    map.setFilter('resources',[
-      'in',
-      ['get','Category'],
-      ['literal',Array.from(activeCategories)]
-    ]);
-    clearBtn.style.display='block';
-  }
-
-  buttons.forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const cat=btn.dataset.category;
-      if(activeCategories.has(cat)){
-        activeCategories.delete(cat);
-        btn.classList.remove('active');
-      }else{
-        activeCategories.add(cat);
-        btn.classList.add('active');
-      }
-      updateFilter();
     });
-  });
 
-  clearBtn.addEventListener('click',()=>{
-    activeCategories.clear();
-    buttons.forEach(b=>b.classList.remove('active'));
-    map.setFilter('resources',null);
-    clearBtn.style.display='none';
-  });
+    map.on('load', () => {
 
-  map.on('click','resources',(e)=>{
-    const p=e.features[0].properties;
+      // Bayview boundary
+      map.addSource('bayview', {
+        type: 'geojson',
+        data: 'neighborhoods.geojson'
+      });
 
-    let content=`<div><strong>${p.Item||''}</strong></div>`;
-    content+=`<div>${p.Address||''}</div>`;
+      map.addLayer({
+        id: 'bayview-fill',
+        type: 'fill',
+        source: 'bayview',
+        filter: ['==', ['get', 'nhood'], 'Bayview Hunters Point'],
+        paint: {
+          'fill-color': '#efbe25',
+          'fill-opacity': 0.07
+        }
+      });
 
-    const hasDetails=p.Type||p.Phone||p.About;
-    if(hasDetails) content+=`<hr>`;
+      map.addLayer({
+        id: 'bayview-outline',
+        type: 'line',
+        source: 'bayview',
+        filter: ['==', ['get', 'nhood'], 'Bayview Hunters Point'],
+        paint: {
+          'line-color': '#efbe25',
+          'line-width': 1.5
+        }
+      });
 
-    if(p.Type) content+=`<div><strong>Type:</strong> ${p.Type}</div>`;
+      // Resources points
+      map.addSource('locations', {
+        type: 'geojson',
+        data: 'bayview-resources.geojson'
+      });
 
-    if(p.Phone){
-      const raw=String(p.Phone);
-      const tel=raw.replace(/[^\d+]/g,'');
-      content+=`<div><strong>Phone:</strong> <a href="tel:${tel}">${raw}</a></div>`;
-    }
+      map.addLayer({
+        id: 'resources',
+        type: 'circle',
+        source: 'locations',
+        paint: {
+          'circle-radius': 8,
+          'circle-opacity': 0.9,
+          'circle-color': [
+            'match',
+            ['get', 'Category'],
+            'School', '#46c134',
+            'Health care', '#57a4ea',
+            'Library', '#f67cf6',
+            'Services', '#efbe25',
+            'Police station', '#f36e57',
+            '#cccccc'
+          ]
+        }
+      });
 
-    if(p.About) content+=`<div><strong>About:</strong> ${p.About}</div>`;
+      // Filtering
+      const activeCategories = new Set();
+      const buttons = document.querySelectorAll('#filters button');
+      const clearBtn = document.getElementById('clear-filters');
 
-    document.getElementById('popup-content').innerHTML=content;
-    document.getElementById('custom-popup').style.display='block';
+      function updateFilter() {
+        if (activeCategories.size === 0) {
+          map.setFilter('resources', null);
+          clearBtn.style.display = 'none';
+          return;
+        }
 
-    sendHeight();
-  });
+        map.setFilter('resources', [
+          'in',
+          ['get', 'Category'],
+          ['literal', Array.from(activeCategories)]
+        ]);
 
-  map.on('click',(e)=>{
-    const features=map.queryRenderedFeatures(e.point,{layers:['resources']});
-    if(features.length) return;
-    document.getElementById('custom-popup').style.display='none';
-    sendHeight();
-  });
+        clearBtn.style.display = 'block';
+      }
 
-  map.on('mouseenter','resources',()=>{ map.getCanvas().style.cursor='pointer'; });
-  map.on('mouseleave','resources',()=>{ map.getCanvas().style.cursor=''; });
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const cat = btn.dataset.category;
 
-});
+          if (activeCategories.has(cat)) {
+            activeCategories.delete(cat);
+            btn.classList.remove('active');
+          } else {
+            activeCategories.add(cat);
+            btn.classList.add('active');
+          }
 
-window.addEventListener('resize',sendHeight);
-window.addEventListener('load',sendHeight);
-</script>
+          updateFilter();
+          sendHeight();
+        });
+      });
 
+      clearBtn.addEventListener('click', () => {
+        activeCategories.clear();
+        buttons.forEach(b => b.classList.remove('active'));
+        map.setFilter('resources', null);
+        clearBtn.style.display = 'none';
+        sendHeight();
+      });
+
+      // Click point -> show info card (no close button)
+      map.on('click', 'resources', (e) => {
+        const p = e.features[0].properties;
+
+        let content = `<div><strong>${p['Item'] || ''}</strong></div>`;
+        content += `<div>${p['Address'] || ''}</div>`;
+
+        const hasDetails = p['Type'] || p['Phone'] || p['About'];
+        if (hasDetails) content += `<hr>`;
+
+        if (p['Type']) content += `<div><strong>Type:</strong> ${p['Type']}</div>`;
+
+        if (p['Phone']) {
+          const phoneRaw = String(p['Phone']);
+          const phoneTel = phoneRaw.replace(/[^\d+]/g, '');
+          content += `<div><strong>Phone:</strong> <a href="tel:${phoneTel}">${phoneRaw}</a></div>`;
+        }
+
+        if (p['About']) content += `<div><strong>About:</strong> ${p['About']}</div>`;
+
+        document.getElementById('popup-content').innerHTML = content;
+        document.getElementById('custom-popup').style.display = 'block';
+
+        sendHeight();
+      });
+
+      // Click elsewhere -> hide info card
+      map.on('click', (e) => {
+        const feats = map.queryRenderedFeatures(e.point, { layers: ['resources'] });
+        if (feats.length) return; // click was on a point
+
+        document.getElementById('custom-popup').style.display = 'none';
+        sendHeight();
+      });
+
+      map.on('mouseenter', 'resources', () => { map.getCanvas().style.cursor = 'pointer'; });
+      map.on('mouseleave', 'resources', () => { map.getCanvas().style.cursor = ''; });
+
+      sendHeight();
+    });
+  </script>
 </body>
 </html>
