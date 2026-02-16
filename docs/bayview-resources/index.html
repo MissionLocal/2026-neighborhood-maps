@@ -16,12 +16,20 @@
 
     .cont { display:flex; justify-content:center; align-items:center; }
 
-    .map-wrapper {
-      position:relative;
-      width:100vw;
-      max-width:400px;
-      margin:10px auto;
-    }
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;   /* mobile default */
+  margin: 10px auto;
+}
+
+/* Desktop */
+@media (min-width: 900px) {
+  .map-wrapper {
+    max-width: 900px;   /* ← change this to whatever width you want */
+  }
+}
+
 
     #map {
       width:100%;
