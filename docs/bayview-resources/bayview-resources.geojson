@@ -1,0 +1,293 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Bayview / Linda Brooks-Burton Branch Library",
+        "Category": "Library",
+        "Type": "",
+        "Address": "5075 3rd St, San Francisco, CA 94124",
+        "Phone": "(415) 642-8901",
+        "About": "The library also offers free events for youth, adults and families."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3912021, 37.7325465] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Dr. Charles R. Drew College Preparatory Academy",
+        "Category": "School",
+        "Type": "Elementary",
+        "Address": "50 Pomona St, San Francisco, CA 94124",
+        "Phone": "(415) 330-1526",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3938961, 37.7317559] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Dr. George Washington Carver Elementary School",
+        "Category": "School",
+        "Type": "Elementary",
+        "Address": "1360 Oakdale Ave, San Francisco, CA 94124",
+        "Phone": "(415) 330-1540",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3854085, 37.7318363] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Bret Harte Elementary School",
+        "Category": "School",
+        "Type": "Elementary",
+        "Address": "1035 Gilman Ave, San Francisco, CA 94124",
+        "Phone": "(415) 330-1520",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3891484, 37.7185053] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "E.R. Taylor Elementary School",
+        "Category": "School",
+        "Type": "Elementary",
+        "Address": "423 Burrows St, San Francisco, CA 94134",
+        "Phone": "(415) 330-1530",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.4071003, 37.7274393] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Malcom X Academy Elementary School",
+        "Category": "School",
+        "Type": "Elementary",
+        "Address": "200-398 Harbor Rd, San Francisco, CA 94124",
+        "Phone": "(415) 695-5950",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3810612, 37.7345787] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Willie L. Brown Jr. Middle School",
+        "Category": "School",
+        "Type": "Middle School",
+        "Address": "2055 Silver Ave, San Francisco, CA 94124",
+        "Phone": "(415) 642-8901",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3992977, 37.7362819] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Dr. Martin Luther King Jr. Middle School",
+        "Category": "School",
+        "Type": "Middle School",
+        "Address": "350 Girard St, San Francisco, CA 94134",
+        "Phone": "(415) 330-1500",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.4055306, 37.7276815] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "C.A.R.E Bayview",
+        "Category": "School",
+        "Type": "Middle School",
+        "Address": "1601 Lane Street, 3rd Floor, San Francisco, 94124",
+        "Phone": "(415) 297-3774",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3898107, 37.7316976] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "KIPP Bayview Academy",
+        "Category": "School",
+        "Type": "Middle School",
+        "Address": "1060 Key Ave, San Francisco, CA 94124",
+        "Phone": "(415) 467-2522",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3963744, 37.71952] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Thurgood Marshall Academic High School",
+        "Category": "School",
+        "Type": "High School",
+        "Address": "1520 Oakdale Ave, San Francisco, CA 94124",
+        "Phone": "(415) 695-5612",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3890423, 37.7345392] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "CCSF Southeast Center",
+        "Category": "School",
+        "Type": "City College campus",
+        "Address": "1800 Oakdale Ave, San Francisco, CA 94124",
+        "Phone": "(415) 642-8901",
+        "About": ""
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3942501, 37.7373094] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Bayview Station",
+        "Category": "Police station",
+        "Type": "",
+        "Address": "201 Williams Ave, San Francisco, CA 94124",
+        "Phone": "(415) 671-2300",
+        "About": "Community meeting is at the first Tuesday of the month, 5 – 6 p.m., in-person at the station."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3979675, 37.7297605] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Southeast Family Health Center",
+        "Category": "Health care",
+        "Type": "",
+        "Address": "2403 Keith St, San Francisco, CA 94124",
+        "Phone": "(415) 671-7000",
+        "About": "Full service health clinic and specialized care."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3925352, 37.7257193] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "District 10 Community Market",
+        "Category": "Services",
+        "Type": "Market",
+        "Address": "5030 3rd St, San Francisco, CA 94124",
+        "Phone": "(415) 845-5147",
+        "About": "Free groceries for those who qualify."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3916528, 37.7328935] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Bayview Senior Servies",
+        "Category": "Services",
+        "Type": "Senior",
+        "Address": "1751 Carroll Ave, San Francisco, CA 94124",
+        "Phone": "(415) 822-1444",
+        "About": "Free programming and resources for Bayview seniors."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3957964, 37.7257498] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Bayview Hunter's Point YMCA",
+        "Category": "Services",
+        "Type": "Youth, adults, families",
+        "Address": "1601 Lane St, San Francisco, CA 94124",
+        "Phone": "(415) 822-7728",
+        "About": "Fitness facilities, family resource center, free programming for youth and adults."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3898107, 37.7316976] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Bayview Community Youth Center / Bayview Transportation Resource Center",
+        "Category": "Services",
+        "Type": "Youth, transportation",
+        "Address": "5009 3rd St, San Francisco, CA 94124",
+        "Phone": "(415) 550-1151",
+        "About": "Programming for youth, free and reduced rate clipper cards and Muni passes."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3911158, 37.7328489] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "3rd St. Youth Center and Clinic",
+        "Category": "Services",
+        "Type": "Youth",
+        "Address": "1728 Bancroft Ave, San Francisco, CA 94124",
+        "Phone": "(415) 822-1707",
+        "About": "Full service primary and sexual health care clinic for youth and access to housing resources and therapy."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3943992, 37.7266441] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Bayview Access Point",
+        "Category": "Services",
+        "Type": "Housing",
+        "Address": "1641 La Salle Ave, San Francisco, CA 94124",
+        "Phone": "(415) 430-6320",
+        "About": "Problem solving for adults and families experiencing homelessness."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3897581, 37.7369194] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Bayview Hunters Point Foundation for Community Improvement",
+        "Category": "Services",
+        "Type": "Housing, health",
+        "Address": "1625 Carroll Ave, San Francisco, CA 94124",
+        "Phone": "(415) 822-8200",
+        "About": "Housing, homelessness, and behavioral health services for residents."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3941174, 37.7250938] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Open Door Legal",
+        "Category": "Services",
+        "Type": "Legal",
+        "Address": "4634 3rd St, San Francisco, CA 94124",
+        "Phone": "(415) 735-4124",
+        "About": "Free legal assistance."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3905172, 37.7359673] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Justice and Diversity Center's Legal Advice and Referal Clinic",
+        "Category": "Services",
+        "Type": "Legal",
+        "Address": "1550 Evans Avenue, San Francisco, CA 94124",
+        "Phone": "(415) 989-1616",
+        "About": "Legal assistance for low-income individuals."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3871504, 37.7428298] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Item": "Southeast Community Center",
+        "Category": "Services",
+        "Type": "Public space",
+        "Address": "1550 Evans Avenue, San Francisco, CA 94124",
+        "Phone": "(415) 523-1434",
+        "About": "Free work and public meeting space."
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3870709, 37.7433706] }
+    }
+  ]
+}

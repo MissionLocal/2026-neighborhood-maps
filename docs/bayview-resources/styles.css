@@ -1,0 +1,164 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Barlow, sans-serif;
+}
+
+.cont {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+}
+
+.map-wrapper {
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.map-header {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 20px 0 10px 0;
+    color: #111;
+    text-align: left;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.credit {
+    font-size: 14px;
+    color: #555;
+    margin: 0 0 20px 0;
+    text-align: left;
+}
+
+#custom-popup {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 350px;
+    background-color: rgba(255, 255, 255);
+    border-radius: 5px;
+    color: #333;
+    font-family: Barlow, sans-serif;
+    font-size: 16px;
+    line-height: 1.2;
+    padding: 1rem 1rem 1.5rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    display: none;
+    overflow-y: auto;
+}
+
+#custom-popup .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 20px;
+    background: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+    #map {
+    height: 450px;
+    }
+
+    #custom-popup {
+    max-width: 90vw;
+    }
+
+    .map-header {
+    font-size: 22px;
+    }
+}
+
+.filter-label {
+    margin: 10px 0 6px 0;
+}
+
+#filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+
+#filters button {
+    color: #000;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: Barlow, sans-serif;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+#filters button.active {
+    opacity: 1;
+}
+
+#clear-filters {
+    cursor: pointer;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+/* Light button colors */
+button[data-category="School"] {
+    background: #8ee085;
+}
+
+button[data-category="Health care"] {
+    background: #9cc8f3;
+}
+
+button[data-category="Library"] {
+    background: #fbb5fb;
+}
+
+button[data-category="Services"] {
+    background: #f6dc7a;
+}
+
+button[data-category="Police station"] {
+    background: #f7a194;
+}
+
+/* Dark active colors */
+button.active[data-category="School"] {
+    background: #46c134;
+}
+
+button.active[data-category="Health care"] {
+    background: #57a4ea;
+}
+
+button.active[data-category="Library"] {
+    background: #f67cf6;
+}
+
+button.active[data-category="Services"] {
+    background: #efbe25;
+}
+
+button.active[data-category="Police station"] {
+    background: #f36e57;
+}
