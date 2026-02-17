@@ -213,7 +213,7 @@
     window.addEventListener('resize', sendHeight);
 
     // Mapbox
-    mapboxgl.accessToken = 'pk.eyJ1IjoibWxub3ciLCJhIjoiY21scG5hY2V5MHdwODNkcHRxb2Nhc2N5NyJ9.Ccmhr38K26uGXhVqe1yepA';
+    mapboxgl.accessToken = 'HERE';
 
     const map = new mapboxgl.Map({
       container: 'map',
@@ -364,17 +364,6 @@
 
       sendHeight();
     });
-
-    // Move points below place/neighborhood labels
-try {
-  if (map.getLayer('settlement-subdivision-label')) {
-    map.moveLayer('resources', 'settlement-subdivision-label');
-  } else if (map.getLayer('settlement-label')) {
-    map.moveLayer('resources', 'settlement-label');
-  }
-} catch (e) {
-  console.log('Label layer not found');
-}
 
   </script>
 </body>
