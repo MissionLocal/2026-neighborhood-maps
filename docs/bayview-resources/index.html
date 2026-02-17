@@ -250,26 +250,36 @@
         type: 'geojson',
         data: 'bayview-resources.geojson'
       });
-
-      map.addLayer({
-        id: 'resources',
-        type: 'circle',
-        source: 'locations',
-        paint: {
-          'circle-radius': 8,
-          'circle-opacity': 0.9,
-          'circle-color': [
-            'match',
-            ['get', 'Category'],
-            'School', '#46c134',
-            'Health care', '#57a4ea',
-            'Library', '#f67cf6',
-            'Services', '#efbe25',
-            'Police station', '#f36e57',
-            '#cccccc'
-          ]
-        }
-      });
+map.addLayer({
+  id: 'resources',
+  type: 'circle',
+  source: 'locations',
+  paint: {
+    'circle-radius': 6,
+    'circle-opacity': 0.6,
+    'circle-color': [
+      'match',
+      ['get', 'Category'],
+      'School', '#46c134',
+      'Health care', '#57a4ea',
+      'Library', '#f67cf6',
+      'Services', '#efbe25',
+      'Police station', '#f36e57',
+      '#cccccc'
+    ],
+    'circle-stroke-color': [
+      'match',
+      ['get', 'Category'],
+      'School', '#46c134',
+      'Health care', '#57a4ea',
+      'Library', '#f67cf6',
+      'Services', '#efbe25',
+      'Police station', '#f36e57',
+      '#cccccc'
+    ],
+    'circle-stroke-width': 1
+  }
+});
 
       // Filtering
       const activeCategories = new Set();
