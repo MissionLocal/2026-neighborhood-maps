@@ -364,6 +364,18 @@
 
       sendHeight();
     });
+
+    // Move points below place/neighborhood labels
+try {
+  if (map.getLayer('settlement-subdivision-label')) {
+    map.moveLayer('resources', 'settlement-subdivision-label');
+  } else if (map.getLayer('settlement-label')) {
+    map.moveLayer('resources', 'settlement-label');
+  }
+} catch (e) {
+  console.log('Label layer not found');
+}
+
   </script>
 </body>
 </html>
