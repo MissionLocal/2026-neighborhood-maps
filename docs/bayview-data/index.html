@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <title>Neighborhoods in data</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://pym.nprapps.org/pym.v1.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="favicon.svg">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+
+<body>
+
+    <div id="main-container">
+        <div class="container">
+            <div class="col-sm-12" id="fixed">
+                <!-- Neighborhood Selection Dropdown -->
+                <select name="dropdown" id="dataset-dropdown">
+                    <option value="custom">Select a neighborhood...</option>
+                    <option value="Bayview Hunters Point">Bayview Hunters Point</option>
+                    <option value="Bernal Heights">Bernal Heights</option>
+                    <option value="Castro/Upper Market">Castro/Upper Market</option>
+                    <option value="Chinatown">Chinatown</option>
+                    <option value="Excelsior">Excelsior</option>
+                    <option value="Financial District/South Beach">Financial District/South Beach</option>
+                    <option value="Glen Park">Glen Park</option>
+                    <option value="Haight Ashbury">Haight Ashbury</option>
+                    <option value="Hayes Valley">Hayes Valley</option>
+                    <option value="Inner Richmond">Inner Richmond</option>
+                    <option value="Inner Sunset">Inner Sunset</option>
+                    <option value="Japantown">Japantown</option>
+                    <option value="Lakeshore">Lakeshore</option>
+                    <option value="Lincoln Park">Lincoln Park</option>
+                    <option value="Lone Mountain/USF">Lone Mountain/USF</option>
+                    <option value="Marina">Marina</option>
+                    <option value="McLaren Park">McLaren Park</option>
+                    <option value="Mission">Mission</option>
+                    <option value="Mission Bay">Mission Bay</option>
+                    <option value="Nob Hill">Nob Hill</option>
+                    <option value="Noe Valley">Noe Valley</option>
+                    <option value="North Beach">North Beach</option>
+                    <option value="Oceanview/Merced/Ingleside">Oceanview/Merced/Ingleside</option>
+                    <option value="Outer Mission">Outer Mission</option>
+                    <option value="Outer Richmond">Outer Richmond</option>
+                    <option value="Pacific Heights">Pacific Heights</option>
+                    <option value="Portola">Portola</option>
+                    <option value="Potrero Hill">Potrero Hill</option>
+                    <option value="Presidio">Presidio</option>
+                    <option value="Presidio Heights">Presidio Heights</option>
+                    <option value="Russian Hill">Russian Hill</option>
+                    <option value="Seacliff">Seacliff</option>
+                    <option value="South of Market">South of Market</option>
+                    <option value="Sunset/Parkside">Sunset/Parkside</option>
+                    <option value="Tenderloin">Tenderloin</option>
+                    <!-- <option value="The Farallones">The Farallones</option> -->
+                    <option value="Treasure Island">Treasure Island</option>
+                    <option value="Twin Peaks">Twin Peaks</option>
+                    <option value="Visitacion Valley">Visitacion Valley</option>
+                    <option value="West of Twin Peaks">West of Twin Peaks</option>
+                    <option value="Western Addition">Western Addition</option>
+                </select>
+                
+                <!-- Map -->
+                <div id='map'></div>
+                
+                <!-- Map Legend -->
+                <div class='map-overlay' id='legend'>
+                    <p><strong>Population</strong></p>
+                    <p id='legend-details'>
+                        <span id='legend-details-local' class='local-highlight legend-label'>0</span>
+                        out of <span id='legend-details-total' class='overall-highlight legend-label'></span>
+                    </p>
+                </div>
+                
+                <!-- Selected Area Info -->
+                <div id="area-list">
+                    <span class='area'>No area selected</span>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="col-sm-12">
+                <div id="text-container">
+                    <!-- Legend for Charts -->
+                    <div class="chart-legend">
+                        <span class='local-highlight legend-label in-results'>Local data</span>
+                        <span class='overall-highlight legend-label in-results'>Citywide data</span>
+                    </div>
+                    
+                    <!-- Results Container -->
+                    <div id="results"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
