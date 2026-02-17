@@ -222,10 +222,10 @@ function generateChart(datasetKey, data, selectedAreas, populationData) {
 
     // Generate HTML
     let chartHTML = `
-        <h4 class='chart-heading' id='heading-${datasetKey}'>
+        <h5 class='chart-heading' id='heading-${datasetKey}'>
             ${title}
             <span class='expand-collapse-indicator'>+</span>
-        </h4>
+        </h5>
         <div class='chart' id='chart-${datasetKey}' style="display: none;">
             ${subtitle ? `<p><em>${subtitle}</em></p>` : ''}
     `;
