@@ -234,16 +234,16 @@
       //   data: 'neighborhoods.geojson'
       // });
 
-      map.addLayer({
-        id: 'bayview-fill',
-        type: 'fill',
-        source: 'bayview',
-        filter: ['==', ['get', 'nhood'], 'Bayview Hunters Point'],
-        paint: {
-          'fill-color': '#efbe25',
-          'fill-opacity': 0.07
-        }
-      });
+      // map.addLayer({
+      //   id: 'bayview-fill',
+      //   type: 'fill',
+      //   source: 'bayview',
+      //   filter: ['==', ['get', 'nhood'], 'Bayview Hunters Point'],
+      //   paint: {
+      //     'fill-color': '#efbe25',
+      //     'fill-opacity': 0.07
+      //   }
+      // });
 
       // Points
       map.addSource('locations', {
@@ -385,7 +385,6 @@ try {
 } catch (e) {
   console.log('Label layer not found');
 }
-
 
   </script>
 </body>
