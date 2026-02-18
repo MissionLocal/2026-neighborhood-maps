@@ -34,16 +34,21 @@ const DEFAULT_NEIGHBORHOOD = 'Bayview Hunters Point';
 
 // Census data structure instead of election data
 var footnotes = {
-    'race': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2023.B03002?q=B03002&g=050XX00US06075$1400000">2023 American Community Survey</a>. "Other" includes non-Hispanic people of more than one race as well as Native Americans, Pacific Islanders, and people of other origins.',
-    'sex': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDP5Y2023.DP05?q=sex&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
-    'age': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDP5Y2023.DP05?q=age&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
-    'disability': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2023.B18101?q=disability&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
-    'education': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2023.B15003?q=b15003&g=050XX00US06075,06075$1400000">2023 American Community Survey</a>. Includes people 25 years and older.',
-    'income': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=income&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
-    'vehicles': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2023.B25044?q=B25044&g=050XX00US06075$1400000&tp=true&tid=ACSDT5Y2021.B25044">2023 American Community Survey</a>.',
-    'internet': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=B28011:+Internet+Subscriptions+in+Household&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
-    'housing_age': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=DP04&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
-    'housing_tenure': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=DP04&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
+    // 'race': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2023.B03002?q=B03002&g=050XX00US06075$1400000">2023 American Community Survey</a>. "Other" includes non-Hispanic people of more than one race as well as Native Americans, Pacific Islanders, and people of other origins.',
+    'race': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2024.B03002?q=B03002&g=050XX00US06075$1400000">2024 American Community Survey</a>. "Other" includes non-Hispanic people of more than one race as well as Native Americans, Pacific Islanders, and people of other origins.',
+    // 'sex': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDP5Y2023.DP05?q=sex&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
+    // 'age': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDP5Y2023.DP05?q=age&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
+    'age': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDP5Y2024.DP05?q=age&g=050XX00US06075$1400000">2024 American Community Survey</a>.',
+    // 'disability': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2023.B18101?q=disability&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
+    // 'education': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2023.B15003?q=b15003&g=050XX00US06075,06075$1400000">2023 American Community Survey</a>. Includes people 25 years and older.',
+    'education': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2024.B15003?q=b15003&g=050XX00US06075,06075$1400000">2024 American Community Survey</a>. Includes people 25 years and older.',
+    // 'income': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=income&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
+    'income': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=table+B19001&g=050XX00US06075$1400000">2024 American Community Survey</a>.',
+    // 'vehicles': 'Data from the <a target="_blank" href="https://data.census.gov/table/ACSDT5Y2023.B25044?q=B25044&g=050XX00US06075$1400000&tp=true&tid=ACSDT5Y2021.B25044">2023 American Community Survey</a>.',
+    // 'internet': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=B28011:+Internet+Subscriptions+in+Household&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
+    // 'housing_age': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=DP04&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
+    // 'housing_tenure': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=DP04&g=050XX00US06075$1400000">2023 American Community Survey</a>.',
+    'housing_tenure': 'Data from the <a target="_blank" href="https://data.census.gov/table?q=DP04&g=050XX00US06075$1400000">2024 American Community Survey</a>.',
     'crime': 'Data from San Francisco Police Department <a target="_blank" href="https://data.sfgov.org/Public-Safety/Police-Department-Incident-Reports-2018-to-Present/wg3w-h783">incident reports for 2024</a>. Please note that incident reports are not the same as <a href="https://www.sanfranciscopolice.org/stay-safe/crime-data/crime-dashboard">official crime statistics</a>. Incidents without geographic data are omitted.'
 }
 
@@ -67,7 +72,7 @@ const datasetInfo = {
 
 // main function
 async function main() {
-    const files = ['race','age','education','income','vehicles','housing_tenure','crime'];
+    const files = ['population','race','age','education','income','vehicles','housing_tenure','crime'];
     const datasets = await fetchData(files);
     const populationData = await fetchPopulation();
     const lookup = await fetchCSV('lookup');
@@ -259,28 +264,37 @@ function generateChart(datasetKey, data, selectedAreas, populationData) {
 
 // Add expand/collapse functionality
 function addExpandCollapseListeners() {
-    const headings = document.querySelectorAll('.chart-heading');
-    
-    headings.forEach(heading => {
-        heading.addEventListener('click', function() {
-            const chartId = this.id.replace('heading-', '');
-            const chartDiv = document.getElementById('chart-' + chartId);
-            const indicator = this.querySelector('.expand-collapse-indicator');
-            
-            if (chartDiv.style.display === 'none' || chartDiv.style.display === '') {
-                chartDiv.style.display = 'block';
-                indicator.textContent = '-';
-            } else {
-                chartDiv.style.display = 'none';
-                indicator.textContent = '+';
-            }
-            
-            if (typeof pymChild !== 'undefined') {
-                pymChild.sendHeight();
-            }
-        });
+  const headings = document.querySelectorAll('.chart-heading');
+
+  headings.forEach((heading) => {
+    heading.addEventListener('click', function () {
+      const chartId = this.id.replace('heading-', '');
+      const chartDiv = document.getElementById('chart-' + chartId);
+      const indicator = this.querySelector('.expand-collapse-indicator');
+
+      const isOpening = (chartDiv.style.display === 'none' || chartDiv.style.display === '');
+
+      // Close all sections first
+      document.querySelectorAll('.chart').forEach((div) => {
+        div.style.display = 'none';
+      });
+      document.querySelectorAll('.expand-collapse-indicator').forEach((ind) => {
+        ind.textContent = '+';
+      });
+
+      // If the clicked one was closed, open it (otherwise it stays closed)
+      if (isOpening) {
+        chartDiv.style.display = 'block';
+        indicator.textContent = '-';
+      }
+
+      if (typeof pymChild !== 'undefined') {
+        pymChild.sendHeight();
+      }
     });
+  });
 }
+
 
 // function to clear everything
 function clear() {
