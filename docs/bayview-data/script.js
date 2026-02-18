@@ -62,7 +62,7 @@ const datasetInfo = {
     'vehicles': ['Vehicle ownership', ''],
     'internet': ['Internet', ''],
     'housing_age': ['Housing age', ''],
-    'housing_tenure': ['Housing tenure', ''],
+    'housing_tenure': ['Tenant vs. homeowner', ''],
     'crime': ['Crime', 'Incidents per 1,000 residents']
 };
 
