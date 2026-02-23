@@ -72,10 +72,10 @@
                     <option value="West of Twin Peaks">West of Twin Peaks</option>
                     <option value="Western Addition">Western Addition</option>
                 </select>
-                
+
                 <!-- Map -->
                 <div id='map'></div>
-                
+
                 <!-- Map Legend -->
                 <div class='map-overlay' id='legend'>
                     <p><strong>Population</strong></p>
@@ -84,22 +84,35 @@
                         out of <span id='legend-details-total' class='overall-highlight legend-label'></span>
                     </p>
                 </div>
-                
+
                 <!-- Selected Area Info -->
                 <div id="area-list">
                     <span class='area'>No area selected</span>
                 </div>
             </div>
-            
+
             <!-- Results Section -->
             <div class="col-sm-12">
                 <div id="text-container">
                     <!-- Legend for Charts -->
                     <div class="chart-legend">
-                        <span class='local-highlight legend-label in-results'>Local data</span>
-                        <span class='overall-highlight legend-label in-results'>Citywide data</span>
+
+                        <!-- ROW 1: Compare dropdown -->
+                        <div class="compare-row">
+                            <span class="compare-label">Compare to:</span>
+                            <select id="compare-dropdown"></select>
+                        </div>
+
+                        <!-- ROW 2: Legend chips -->
+                        <div class="legend-row">
+                            <span class="local-highlight legend-label in-results">Local data</span>
+                            <span id="compare-legend-label" class="overall-highlight legend-label in-results">
+                                Citywide data
+                            </span>
+                        </div>
+
                     </div>
-                    
+
                     <!-- Results Container -->
                     <div id="results"></div>
                 </div>
@@ -110,5 +123,4 @@
     <script src="script.js"></script>
 
 </body>
-
 </html>

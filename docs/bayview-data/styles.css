@@ -237,30 +237,21 @@ hr.solid {
     line-height: 0px;
 }
 
-#dataset-dropdown {
+/* #dataset-dropdown {
     font-size: 16px;
-    /* Increase font size for better readability */
     border-radius: 5px;
-    /* Rounded corners */
     border: 0px solid gray;
-    /* Border for visibility */
     margin: 0 auto;
-    /* Center the dropdown itself */
     font-family: Barlow, sans-serif;
     width: 100vw;
     max-width: 300px;
     background-color: white;
-    /* Match legend background */
     padding: 5px;
-    /* Add padding similar to legend */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Add subtle shadow */
     appearance: none;
-    /* Remove default styling in some browsers */
     position: relative;
     padding-right: 30px;
-    /* Space for arrow */
-}
+} */
 
 .contest-title {
     font-size: 20px;
@@ -296,4 +287,22 @@ hr.solid {
         top: 60px;
         left: 25px;
     }
+}
+
+.chart-legend{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.compare-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-row{
+  display: flex;
+  gap: 10px;
 }
