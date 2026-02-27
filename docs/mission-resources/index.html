@@ -1,374 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <title>Mission resources</title>
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta charset="utf-8" />
+    <title>Mission resources</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
-  <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+    <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
 
-  <style>
-    :root{
-      --school:#46c134;
-      --health:#57a4ea;
-      --library:#f67cf6;
-      --services:#efbe25;
-      --police:#f36e57;
-    }
+    <style>
+        :root {
+            --school: #46c134;
+            --health: #57a4ea;
+            --library: #f67cf6;
+            --services: #efbe25;
+            --police: #f36e57;
+        }
 
-    body{
-      margin:0;
-      padding:0 0 20px 0;
-      font-family:'Barlow', sans-serif;
-      background:#fff;
-    }
+        body {
+            margin: 0;
+            padding: 0 0 20px 0;
+            font-family: 'Barlow', sans-serif;
+            background: #fff;
+        }
 
-    .cont{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
+        .cont {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .map-wrapper{
-      position:relative;
-      width:100%;
-      max-width:400px;
-      margin:10px auto;
-    }
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+        }
 
-    @media (min-width:400px){
-      .map-wrapper{ max-width:900px; }
-    }
+        @media (min-width:400px) {
+            .map-wrapper {
+                max-width: 900px;
+            }
+        }
 
-    .filter-label{
-      text-align:center;
-      font-size:14px;
-      margin:4px 0 6px;
-    }
+        .filter-label {
+            text-align: center;
+            font-size: 14px;
+            margin: 4px 0 6px;
+        }
 
-    /* shows only when filters active (toggled in JS) */
-    #clear-wrap{
-      display:none;
-    }
+        /* shows only when filters active (toggled in JS) */
+        #clear-wrap {
+            display: none;
+        }
 
-    .slash{
-      color:#666;
-    }
+        .slash {
+            color: #666;
+        }
 
-    /* underline only the words */
-    #clear-link{
-      color:#666;
-      cursor:pointer;
-      border-bottom:1px solid currentColor;
-      padding-bottom:1px;
-    }
+        /* underline only the words */
+        #clear-link {
+            color: #666;
+            cursor: pointer;
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 1px;
+        }
 
-    #clear-link:hover{
-      color:#111;
-    }
+        #clear-link:hover {
+            color: #111;
+        }
 
-    #filters{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:center;
-      margin-bottom:10px;
-    }
+        #filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
 
-    #filters button{
-      font-family:'Barlow', sans-serif;
-      font-size:14px;
-      padding:6px 6px;
-      border-radius:4px;
-      background:#fff;
-      border:1px solid; /* color set per category */
-      cursor:pointer;
-      line-height:1;
-      white-space:nowrap;
-      transition:all .15s ease;
-    }
+        #filters button {
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            padding: 6px 6px;
+            border-radius: 4px;
+            background: #fff;
+            border: 1px solid;
+            /* color set per category */
+            cursor: pointer;
+            line-height: 1;
+            white-space: nowrap;
+            transition: all .15s ease;
+        }
 
-    /* DEFAULT = colored outline + colored text */
-    #filters button[data-category="School"]{ border-color:var(--school); color:var(--school); }
-    #filters button[data-category="Health care"]{ border-color:var(--health); color:var(--health); }
-    #filters button[data-category="Library"]{ border-color:var(--library); color:var(--library); }
-    #filters button[data-category="Services"]{ border-color:var(--services); color:var(--services); }
-    #filters button[data-category="Police station"]{ border-color:var(--police); color:var(--police); }
+        /* DEFAULT = colored outline + colored text */
+        #filters button[data-category="School"] {
+            border-color: var(--school);
+            color: var(--school);
+        }
 
-    /* ACTIVE = subtle fill */
-    #filters button.active[data-category="School"]{ background: rgba(70,193,52,.15); }
-    #filters button.active[data-category="Health care"]{ background: rgba(87,164,234,.15); }
-    #filters button.active[data-category="Library"]{ background: rgba(246,124,246,.15); }
-    #filters button.active[data-category="Services"]{ background: rgba(239,190,37,.18); }
-    #filters button.active[data-category="Police station"]{ background: rgba(243,110,87,.15); }
+        #filters button[data-category="Health care"] {
+            border-color: var(--health);
+            color: var(--health);
+        }
 
-    #filters button:hover{
-      transform: translateY(-1px);
-    }
+        #filters button[data-category="Library"] {
+            border-color: var(--library);
+            color: var(--library);
+        }
 
-    .map-stage{
-      position:relative;
-      width:100%;
-    }
+        #filters button[data-category="Services"] {
+            border-color: var(--services);
+            color: var(--services);
+        }
 
-    #map{
-      width:100%;
-      height:500px;
-      box-shadow:0 4px 8px rgba(0,0,0,.1);
-    }
+        #filters button[data-category="Police station"] {
+            border-color: var(--police);
+            color: var(--police);
+        }
 
-    @media (min-width:900px){
-      #map{ height:600px; }
-    }
+        /* ACTIVE = subtle fill */
+        #filters button.active[data-category="School"] {
+            background: rgba(70, 193, 52, .15);
+        }
 
-    /* INFO CARD */
-    #custom-popup{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:14px;
-      z-index:10;
+        #filters button.active[data-category="Health care"] {
+            background: rgba(87, 164, 234, .15);
+        }
 
-      width:calc(100% - 12px);
-      max-width:460px;
-      box-sizing:border-box;
+        #filters button.active[data-category="Library"] {
+            background: rgba(246, 124, 246, .15);
+        }
 
-      padding:8px 10px;
-      background:rgba(255,255,255,.98);
-      border-radius:2px;
-      box-shadow:0 2px 4px rgba(0,0,0,.10);
+        #filters button.active[data-category="Services"] {
+            background: rgba(239, 190, 37, .18);
+        }
 
-      font-size:13px;
-      line-height:1.35;
-      max-height:40%;
-      overflow-y:auto;
+        #filters button.active[data-category="Police station"] {
+            background: rgba(243, 110, 87, .15);
+        }
 
-      display:none;
-    }
+        #filters button:hover {
+            transform: translateY(-1px);
+        }
 
-    #popup-content div{ margin-bottom:6px; }
+        .map-stage {
+            position: relative;
+            width: 100%;
+        }
 
-    #popup-content hr{
-      border:0;
-      border-top:1px solid rgba(0,0,0,.12);
-      margin:8px 0;
-    }
+        #map {
+            width: 100%;
+            height: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+        }
 
-    #popup-content strong{ font-weight:600; }
+        @media (min-width:900px) {
+            #map {
+                height: 600px;
+            }
+        }
 
-    #popup-content a{
-      color:#555;
-      text-decoration:underline;
-      text-underline-offset:2px;
-    }
+        /* INFO CARD */
+        #custom-popup {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 14px;
+            z-index: 10;
 
-    #popup-content a:hover{ color:#111; }
+            width: calc(100% - 12px);
+            max-width: 460px;
+            box-sizing: border-box;
 
-    .credit{
-      text-align:center;
-      font-size:12px;
-      color:#555;
-      margin-top:10px;
-    }
-  </style>
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, .98);
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .10);
+
+            font-size: 13px;
+            line-height: 1.35;
+            max-height: 40%;
+            overflow-y: auto;
+
+            display: none;
+        }
+
+        #popup-content div {
+            margin-bottom: 6px;
+        }
+
+        #popup-content hr {
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, .12);
+            margin: 8px 0;
+        }
+
+        #popup-content strong {
+            font-weight: 600;
+        }
+
+        #popup-content a {
+            color: #555;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        #popup-content a:hover {
+            color: #111;
+        }
+
+        .credit {
+            text-align: center;
+            font-size: 12px;
+            color: #555;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="cont">
-    <div class="map-wrapper">
+    <div class="cont">
+        <div class="map-wrapper">
 
-      <p class="filter-label">
-        <em>Click to filter by category</em>
-        <span id="clear-wrap">
-          <span class="slash"> / </span>
-          <span id="clear-link" role="button" tabindex="0">Clear selection</span>
-        </span>
-      </p>
+            <p class="filter-label">
+                <em>Click to filter by category</em>
+                <span id="clear-wrap">
+                    <span class="slash"> / </span>
+                    <span id="clear-link" role="button" tabindex="0">Clear selection</span>
+                </span>
+            </p>
 
-      <div id="filters">
-        <button data-category="School">School</button>
-        <button data-category="Health care">Health care</button>
-        <button data-category="Library">Library</button>
-        <button data-category="Services">Services</button>
-        <button data-category="Police station">Police</button>
-      </div>
+            <div id="filters">
+                <button data-category="School">School</button>
+                <button data-category="Health care">Health care</button>
+                <button data-category="Library">Library</button>
+                <button data-category="Services">Services</button>
+                <button data-category="Police station">Police</button>
+            </div>
 
-      <div class="map-stage">
-        <div id="map"></div>
-        <div id="custom-popup"><div id="popup-content"></div></div>
-      </div>
+            <div class="map-stage">
+                <div id="map"></div>
+                <div id="custom-popup">
+                    <div id="popup-content"></div>
+                </div>
+            </div>
 
-      <p class="credit">Source: Data compiled by Marina Newman. Map by Xueer Lu &amp; Kelly Waldron.</p>
+            <p class="credit">Source: Data compiled by Marina Newman. Map by Xueer Lu &amp; Kelly Waldron.</p>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Pym
-    const pymChild = new pym.Child();
-    function sendHeight(){ pymChild.sendHeight(); }
-    window.addEventListener('load', sendHeight);
-    window.addEventListener('resize', sendHeight);
+    <script>
+        // Pym
+        const pymChild = new pym.Child();
+        function sendHeight() { pymChild.sendHeight(); }
+        window.addEventListener('load', sendHeight);
+        window.addEventListener('resize', sendHeight);
 
-    // Mapbox
-    mapboxgl.accessToken = 'pk.eyJ1IjoibWxub3ciLCJhIjoiY21scHVqYzdzMHFxdzNlcTZ3bWRibHJrayJ9._71fI5BCOxVoShuCjUjNjQ';
+        // Mapbox
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWxub3ciLCJhIjoiY21scHVqYzdzMHFxdzNlcTZ3bWRibHJrayJ9._71fI5BCOxVoShuCjUjNjQ';
 
-    const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
-      center: [-122.3854085, 37.7318363],
-      zoom: 11.6,
-      maxBounds: [
-        [-122.432, 37.695],
-        [-122.340, 37.765]
-      ]
-    });
-
-    map.on('load', () => {
-
-      // Points
-      map.addSource('locations', {
-        type: 'geojson',
-        data: 'mission.geojson'
-      });
-map.addLayer({
-  id: 'resources',
-  type: 'circle',
-  source: 'locations',
-  paint: {
-    'circle-radius': 6,
-    'circle-opacity': 0.6,
-    'circle-color': [
-      'match',
-      ['get', 'Category'],
-      'School', '#46c134',
-      'Health care', '#57a4ea',
-      'Library', '#f67cf6',
-      'Services', '#efbe25',
-      'Police station', '#f36e57',
-      '#cccccc'
-    ],
-    'circle-stroke-color': [
-      'match',
-      ['get', 'Category'],
-      'School', '#46c134',
-      'Health care', '#57a4ea',
-      'Library', '#f67cf6',
-      'Services', '#efbe25',
-      'Police station', '#f36e57',
-      '#cccccc'
-    ],
-    'circle-stroke-width': 1
-  }
-});
-
-      // Filtering
-      const activeCategories = new Set();
-      const buttons = document.querySelectorAll('#filters button');
-      const clearWrap = document.getElementById('clear-wrap');
-      const clearLink = document.getElementById('clear-link');
-
-      function updateFilter(){
-        if(activeCategories.size === 0){
-          map.setFilter('resources', null);
-          clearWrap.style.display = 'none';
-          return;
-        }
-
-        map.setFilter('resources', [
-          'in',
-          ['get','Category'],
-          ['literal', Array.from(activeCategories)]
-        ]);
-
-        clearWrap.style.display = 'inline';
-      }
-
-      function clearAll(){
-        activeCategories.clear();
-        buttons.forEach(b => b.classList.remove('active'));
-        map.setFilter('resources', null);
-        clearWrap.style.display = 'none';
-        sendHeight();
-      }
-
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const cat = btn.dataset.category;
-
-          if(activeCategories.has(cat)){
-            activeCategories.delete(cat);
-            btn.classList.remove('active');
-          } else {
-            activeCategories.add(cat);
-            btn.classList.add('active');
-          }
-
-          updateFilter();
-          sendHeight();
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
+            center: [-122.416910, 37.758495],
+            zoom: 11.6,
+            maxBounds: [
+                [-122.5247, 37.7081],
+                [-122.3557, 37.8324]
+            ]
         });
-      });
+        map.on('load', () => {
 
-      clearLink.addEventListener('click', clearAll);
-      clearLink.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          clearAll();
+            // Points
+            map.addSource('locations', {
+                type: 'geojson',
+                data: 'mission.geojson'
+            });
+            map.addLayer({
+                id: 'resources',
+                type: 'circle',
+                source: 'locations',
+                paint: {
+                    'circle-radius': 6,
+                    'circle-opacity': 0.6,
+                    'circle-color': [
+                        'match',
+                        ['get', 'Category'],
+                        'School', '#46c134',
+                        'Health care', '#57a4ea',
+                        'Library', '#f67cf6',
+                        'Services', '#efbe25',
+                        'Police station', '#f36e57',
+                        '#cccccc'
+                    ],
+                    'circle-stroke-color': [
+                        'match',
+                        ['get', 'Category'],
+                        'School', '#46c134',
+                        'Health care', '#57a4ea',
+                        'Library', '#f67cf6',
+                        'Services', '#efbe25',
+                        'Police station', '#f36e57',
+                        '#cccccc'
+                    ],
+                    'circle-stroke-width': 1
+                }
+            });
+
+            // Filtering
+            const activeCategories = new Set();
+            const buttons = document.querySelectorAll('#filters button');
+            const clearWrap = document.getElementById('clear-wrap');
+            const clearLink = document.getElementById('clear-link');
+
+            function updateFilter() {
+                if (activeCategories.size === 0) {
+                    map.setFilter('resources', null);
+                    clearWrap.style.display = 'none';
+                    return;
+                }
+
+                map.setFilter('resources', [
+                    'in',
+                    ['get', 'Category'],
+                    ['literal', Array.from(activeCategories)]
+                ]);
+
+                clearWrap.style.display = 'inline';
+            }
+
+            function clearAll() {
+                activeCategories.clear();
+                buttons.forEach(b => b.classList.remove('active'));
+                map.setFilter('resources', null);
+                clearWrap.style.display = 'none';
+                sendHeight();
+            }
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const cat = btn.dataset.category;
+
+                    if (activeCategories.has(cat)) {
+                        activeCategories.delete(cat);
+                        btn.classList.remove('active');
+                    } else {
+                        activeCategories.add(cat);
+                        btn.classList.add('active');
+                    }
+
+                    updateFilter();
+                    sendHeight();
+                });
+            });
+
+            clearLink.addEventListener('click', clearAll);
+            clearLink.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    clearAll();
+                }
+            });
+
+            // Info card
+            map.on('click', 'resources', (e) => {
+                const p = e.features[0].properties;
+
+                let content = `<div><strong>${p.Item || ''}</strong></div>`;
+                content += `<div>${p.Address || ''}</div>`;
+
+                const hasDetails = p.Type || p.Phone || p.About;
+                if (hasDetails) content += `<hr>`;
+
+                if (p.Type) content += `<div><strong>Type:</strong> ${p.Type}</div>`;
+
+                if (p.Phone) {
+                    const raw = String(p.Phone);
+                    const tel = raw.replace(/[^\d+]/g, '');
+                    content += `<div><strong>Phone:</strong> <a href="tel:${tel}">${raw}</a></div>`;
+                }
+
+                if (p.About) content += `<div><strong>About:</strong> ${p.About}</div>`;
+
+                document.getElementById('popup-content').innerHTML = content;
+                document.getElementById('custom-popup').style.display = 'block';
+                sendHeight();
+            });
+
+            // Click elsewhere -> hide info card
+            map.on('click', (e) => {
+                const feats = map.queryRenderedFeatures(e.point, { layers: ['resources'] });
+                if (feats.length) return;
+                document.getElementById('custom-popup').style.display = 'none';
+                sendHeight();
+            });
+
+            map.on('mouseenter', 'resources', () => { map.getCanvas().style.cursor = 'pointer'; });
+            map.on('mouseleave', 'resources', () => { map.getCanvas().style.cursor = ''; });
+
+            sendHeight();
+        });
+
+        // Move points below place/neighborhood labels
+        try {
+            if (map.getLayer('settlement-subdivision-label')) {
+                map.moveLayer('resources', 'settlement-subdivision-label');
+            } else if (map.getLayer('settlement-label')) {
+                map.moveLayer('resources', 'settlement-label');
+            }
+        } catch (e) {
+            console.log('Label layer not found');
         }
-      });
 
-      // Info card
-      map.on('click', 'resources', (e) => {
-        const p = e.features[0].properties;
-
-        let content = `<div><strong>${p.Item || ''}</strong></div>`;
-        content += `<div>${p.Address || ''}</div>`;
-
-        const hasDetails = p.Type || p.Phone || p.About;
-        if (hasDetails) content += `<hr>`;
-
-        if (p.Type) content += `<div><strong>Type:</strong> ${p.Type}</div>`;
-
-        if (p.Phone) {
-          const raw = String(p.Phone);
-          const tel = raw.replace(/[^\d+]/g, '');
-          content += `<div><strong>Phone:</strong> <a href="tel:${tel}">${raw}</a></div>`;
-        }
-
-        if (p.About) content += `<div><strong>About:</strong> ${p.About}</div>`;
-
-        document.getElementById('popup-content').innerHTML = content;
-        document.getElementById('custom-popup').style.display = 'block';
-        sendHeight();
-      });
-
-      // Click elsewhere -> hide info card
-      map.on('click', (e) => {
-        const feats = map.queryRenderedFeatures(e.point, { layers: ['resources'] });
-        if (feats.length) return;
-        document.getElementById('custom-popup').style.display = 'none';
-        sendHeight();
-      });
-
-      map.on('mouseenter', 'resources', () => { map.getCanvas().style.cursor = 'pointer'; });
-      map.on('mouseleave', 'resources', () => { map.getCanvas().style.cursor = ''; });
-
-      sendHeight();
-    });
-
-    // Move points below place/neighborhood labels
-try {
-  if (map.getLayer('settlement-subdivision-label')) {
-    map.moveLayer('resources', 'settlement-subdivision-label');
-  } else if (map.getLayer('settlement-label')) {
-    map.moveLayer('resources', 'settlement-label');
-  }
-} catch (e) {
-  console.log('Label layer not found');
-}
-
-  </script>
+    </script>
 </body>
+
 </html>
