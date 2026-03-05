@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // ---- Require pinch to zoom, disable scroll wheel ----
         scrollZoom: false,
         dragRotate: false,
+            dragPan: false,
         touchPitch: false
     });
 
