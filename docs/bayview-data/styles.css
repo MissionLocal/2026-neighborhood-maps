@@ -21,6 +21,14 @@ html {
     max-width: none;
 }
 
+.compare-label {
+  flex: 0;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #555;
+  padding: 0 4px;
+}
+
 /* #map {
     height: 550px;
     margin-top: 10px;
