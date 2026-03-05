@@ -620,8 +620,6 @@ map.on("mouseleave", mapFill, () => {
   hoveredId = null;
 });
 
-// add navigation
-map.addControl(new mapboxgl.NavigationControl());
 
 // fit map to container
 this.map.once("load", () => {
