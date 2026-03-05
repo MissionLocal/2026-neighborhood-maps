@@ -15,6 +15,10 @@ var map = new mapboxgl.Map({
   style: "mapbox://styles/mlnow/cmbgyvcll009801sn6ygk6kzo",
   zoom: mapZoom,
   center: [-122.438, mapY],
+          scrollZoom: false,
+        dragRotate: false,
+            dragPan: false,
+        touchPitch: false
 });
 
 // define stuff
