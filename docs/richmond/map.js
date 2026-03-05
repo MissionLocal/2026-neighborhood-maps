@@ -17,7 +17,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         maxBounds: [
             [-122.60, 37.68],   // southwest corner
             [-122.28, 37.88]    // northeast corner
-        ]
+        ], 
+                scrollZoom: false,
+        dragRotate: false,
+            dragPan: false,
+        touchPitch: false
     });
 
     if (window.innerWidth < 768) {

@@ -17,6 +17,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         [-122.60, 37.68],
         [-122.28, 37.88],
       ],
+              scrollZoom: false,
+        dragRotate: false,
+            dragPan: false,
+        touchPitch: false
     });
   
     if (window.innerWidth < 768) {
