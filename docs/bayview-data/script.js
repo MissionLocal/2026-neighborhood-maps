@@ -15,10 +15,6 @@ var map = new mapboxgl.Map({
   style: "mapbox://styles/mlnow/cmbgyvcll009801sn6ygk6kzo",
   zoom: mapZoom,
   center: [-122.438, mapY],
-                  scrollZoom: false,
-        dragRotate: false,
-            dragPan: false,
-        touchPitch: false
 });
 
 // define stuff
@@ -292,9 +288,6 @@ function generate(datasets, populationData, selectedAreas, lookup) {
   }, 0);
 
   legendDetailsLocal.innerHTML = numberWithCommas(local_population);
-
-  var clearButton = document.getElementById("clear-button");
-  clearButton.addEventListener("click", clear);
 
   Object.keys(datasetInfo).forEach((datasetKey) => {
     if (datasets[datasetKey]) {
@@ -619,7 +612,6 @@ map.on("mouseleave", mapFill, () => {
   }
   hoveredId = null;
 });
-
 
 // fit map to container
 this.map.once("load", () => {
