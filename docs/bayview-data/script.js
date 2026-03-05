@@ -15,20 +15,31 @@ var map = new mapboxgl.Map({
   style: "mapbox://styles/mlnow/cmbgyvcll009801sn6ygk6kzo",
   zoom: mapZoom,
   center: [-122.438, mapY],
+                  scrollZoom: false,
+        dragRotate: false,
+            dragPan: false,
+        touchPitch: false
 });
 
 // define stuff
 var mapFill = "map_fill_001";
 var source = "basemap";
+
+// LEFT (pink) selection = primary selected tracts
 var selectedAreas = [];
+
+// RIGHT (grey) selection = compare selected tracts
+var compareSelectedAreas = [];
+
 var legendDetailsLocal = document.getElementById("legend-details-local");
 var legendDetailsTotal = document.getElementById("legend-details-total");
 var results = document.getElementById("results");
 var areaList = document.getElementById("area-list");
 var dropdown = document.getElementById("dataset-dropdown");
 var pymChild = new pym.Child();
+var localLegendLabel = document.getElementById("local-legend-label");
 
-// Compare controls (NEW)
+// Compare controls
 var compareDropdown = document.getElementById("compare-dropdown");
 var compareLegendLabel = document.getElementById("compare-legend-label");
 
@@ -74,7 +85,6 @@ const datasetInfo = {
 /// PRIMARY FUNCTIONS
 ///
 
-// main function
 async function main() {
   const files = ["population", "race", "age", "education", "income", "vehicles", "housing_tenure", "crime"];
   const datasets = await fetchData(files);
@@ -88,13 +98,14 @@ async function main() {
 
   legendDetailsTotal.innerHTML = numberWithCommas(total_population);
 
-  // Setup compare dropdown (NEW)
+  // stash for compare dropdown regeneration + compare map selection updates
+  window.__datasets = datasets;
+  window.__populationData = populationData;
+  window.__lookup = lookup;
+
   setupCompareDropdown(lookup);
 
-  map.on("click", mapFill, (e) => {
-    hoveredId = e.features[0].properties.name;
-    onMapClick(datasets, populationData, hoveredId, lookup);
-  });
+  // No map click handler — selection is dropdown-only
 
   dropdown.addEventListener("change", function () {
     onDropdownSelect(datasets, populationData, lookup, this.value);
@@ -105,23 +116,20 @@ async function main() {
   onDropdownSelect(datasets, populationData, lookup, DEFAULT_NEIGHBORHOOD);
 }
 
-// Compare dropdown wiring (NEW)
+// Compare dropdown wiring
 function setupCompareDropdown(lookup) {
   if (!compareDropdown) return;
 
-  // Build list of neighborhoods from the main dropdown options to match exactly
   const opts = Array.from(dropdown.options)
     .map((o) => o.value)
     .filter((v) => v && v !== "custom");
 
-  // Default: Citywide
   compareDropdown.innerHTML = "";
   const base = document.createElement("option");
   base.value = "";
   base.textContent = "Citywide";
   compareDropdown.appendChild(base);
 
-  // Add neighborhoods
   opts.forEach((name) => {
     const o = document.createElement("option");
     o.value = name;
@@ -132,20 +140,24 @@ function setupCompareDropdown(lookup) {
   compareDropdown.value = "";
   compareNeighborhood = "";
 
-  // Legend label default
   if (compareLegendLabel) compareLegendLabel.textContent = "Citywide data";
 
   compareDropdown.addEventListener("change", function () {
     compareNeighborhood = this.value || "";
+
+    // Disable selected compare neighborhood in main dropdown
+    refreshMainDropdown(compareNeighborhood);
+
     if (compareLegendLabel) {
       compareLegendLabel.textContent = compareNeighborhood
-        ? `Compare: ${compareNeighborhood}`
+        ? compareNeighborhood
         : "Citywide data";
     }
 
-    // Regenerate (uses current selectedAreas)
-    // We don’t need lookup here; generateChart will compute compare tracts when needed
-    // But generate() needs lookup to resolve compare tracts, so we’ll store it globally via window.
+    if (window.__lookup) {
+      updateCompareMapSelection(window.__lookup);
+    }
+
     if (window.__lookup) {
       generate(window.__datasets, window.__populationData, selectedAreas, window.__lookup);
       pymChild.sendHeight();
@@ -153,6 +165,18 @@ function setupCompareDropdown(lookup) {
   });
 }
 
+// Disable/enable options in the main dropdown based on compare selection
+function refreshMainDropdown(selectedCompareNeighborhood) {
+  const currentMainValue = dropdown.value;
+
+  Array.from(dropdown.options).forEach(opt => {
+    if (opt.value && opt.value !== "custom") {
+      opt.disabled = opt.value === selectedCompareNeighborhood;
+    }
+  });
+}
+
+// Remove the selected neighborhood from compare options
 function refreshCompareDropdown(lookup, selectedNeighborhood) {
   if (!compareDropdown) return;
 
@@ -162,13 +186,11 @@ function refreshCompareDropdown(lookup, selectedNeighborhood) {
 
   compareDropdown.innerHTML = "";
 
-  // Always include Citywide
   const citywideOption = document.createElement("option");
   citywideOption.value = "";
   citywideOption.textContent = "Citywide";
   compareDropdown.appendChild(citywideOption);
 
-  // Add all neighborhoods EXCEPT the selected one
   allOptions.forEach(name => {
     if (name !== selectedNeighborhood) {
       const opt = document.createElement("option");
@@ -178,41 +200,29 @@ function refreshCompareDropdown(lookup, selectedNeighborhood) {
     }
   });
 
-  // If compare selection matches selectedNeighborhood, reset to Citywide
   if (compareNeighborhood === selectedNeighborhood) {
     compareNeighborhood = "";
     compareDropdown.value = "";
-    if (compareLegendLabel) {
-      compareLegendLabel.textContent = "Citywide data";
-    }
+    if (compareLegendLabel) compareLegendLabel.textContent = "Citywide data";
   }
 }
 
-// when map is clicked
-function onMapClick(datasets, populationData, hoveredId, lookup) {
-  if (selectedAreas.includes(hoveredId)) {
-    removeItem(selectedAreas, hoveredId);
-    changeMapSelection([hoveredId], false);
-  } else {
-    selectedAreas.push(hoveredId);
-    changeMapSelection([hoveredId], true);
-  }
-
-  generate(datasets, populationData, selectedAreas, lookup);
-  pymChild.sendHeight();
-}
-
-// when dropdown is clicked
+// when dropdown is clicked (pink selection)
 function onDropdownSelect(datasets, populationData, lookup, value) {
   selectedAreas = lookup
     .filter(function (el) {
       return el.neighborhood == value;
     })
     .map(function (el) {
-      return el.tract; // census tract names
+      return el.tract;
     });
 
-      refreshCompareDropdown(lookup, value);
+  // Update pink legend label
+  if (localLegendLabel) {
+    localLegendLabel.textContent = value === "custom" ? "Local data" : value;
+  }
+
+  refreshCompareDropdown(lookup, value);
 
   var allAreas = lookup
     .map(function (el) {
@@ -220,33 +230,52 @@ function onDropdownSelect(datasets, populationData, lookup, value) {
     })
     .slice(1);
 
-  changeMapSelection(allAreas, false);
+  changeMapSelection(allAreas, false, "selected");
+  changeMapSelection(allAreas, false, "compareSelected");
 
   if (value == "custom") {
     clear();
   } else {
-    changeMapSelection(selectedAreas, true);
+    changeMapSelection(selectedAreas, true, "selected");
   }
+
+  updateCompareMapSelection(lookup);
 
   generate(datasets, populationData, selectedAreas, lookup);
   pymChild.sendHeight();
 }
 
-// function to change map selection
-function changeMapSelection(areas, bool) {
+// compute compareSelectedAreas + update feature-state on map
+function updateCompareMapSelection(lookup) {
+  if (compareSelectedAreas.length) {
+    changeMapSelection(compareSelectedAreas, false, "compareSelected");
+  }
+  compareSelectedAreas = [];
+
+  if (!compareNeighborhood) return;
+
+  compareSelectedAreas = lookup
+    .filter((el) => el.neighborhood == compareNeighborhood)
+    .map((el) => el.tract);
+
+  const greyOnly = compareSelectedAreas.filter((tract) => !selectedAreas.includes(tract));
+  changeMapSelection(greyOnly, true, "compareSelected");
+}
+
+// function to change map selection feature-state
+function changeMapSelection(areas, bool, stateKey) {
   areas.forEach(function (area) {
     if (area == undefined) return;
-    map.setFeatureState({ source: source, id: area }, { selected: bool });
+    map.setFeatureState({ source: source, id: area }, { [stateKey]: bool });
   });
 }
 
 function generate(datasets, populationData, selectedAreas, lookup) {
-  // stash for compare dropdown regeneration
   window.__datasets = datasets;
   window.__populationData = populationData;
   window.__lookup = lookup;
 
-  results.innerHTML = ""; // clear results
+  results.innerHTML = "";
 
   if (selectedAreas.length == 0) {
     areaList.innerHTML = "<span class='area'>No area selected</span>";
@@ -256,9 +285,8 @@ function generate(datasets, populationData, selectedAreas, lookup) {
     return;
   }
 
-  areaList.innerHTML = "<button id='clear-button'>Clear selection</button>";
+  areaList.innerHTML = "";
 
-  // local population
   const local_population = selectedAreas.reduce((acc, area) => {
     return acc + parseInt(populationData["value"][area] || 0, 10);
   }, 0);
@@ -268,7 +296,6 @@ function generate(datasets, populationData, selectedAreas, lookup) {
   var clearButton = document.getElementById("clear-button");
   clearButton.addEventListener("click", clear);
 
-  // Process each dataset
   Object.keys(datasetInfo).forEach((datasetKey) => {
     if (datasets[datasetKey]) {
       generateChart(datasetKey, datasets[datasetKey], selectedAreas, populationData, lookup);
@@ -282,17 +309,12 @@ function generateChart(datasetKey, data, selectedAreas, populationData, lookup) 
   const [title, subtitle] = datasetInfo[datasetKey];
   const columns = Object.keys(data);
 
-  // Remove total/population column (usually last)
   const dataColumns = columns.slice(0, -1);
 
-  // Local sums
   const localSums = dataColumns.map((column) =>
     selectedAreas.reduce((sum, area) => sum + (data[column][area] || 0), 0)
   );
 
-  // Comparison target (NEW)
-  // If compareNeighborhood is "", we compare to CITYWIDE (original behavior)
-  // Else, compare to that neighborhood’s tracts (not citywide)
   let compareAreas = null;
   if (compareNeighborhood) {
     compareAreas = lookup
@@ -300,7 +322,6 @@ function generateChart(datasetKey, data, selectedAreas, populationData, lookup) 
       .map((el) => el.tract);
   }
 
-  // Compare sums
   let compareSums = null;
 
   if (compareNeighborhood) {
@@ -308,13 +329,11 @@ function generateChart(datasetKey, data, selectedAreas, populationData, lookup) 
       compareAreas.reduce((sum, area) => sum + (data[column][area] || 0), 0)
     );
   } else {
-    // Citywide (original)
     compareSums = dataColumns.map((column) =>
       Object.values(data[column]).reduce((sum, value) => sum + value, 0)
     );
   }
 
-  // Rates
   let localRates, compareRates;
 
   if (datasetKey === "crime") {
@@ -346,7 +365,6 @@ function generateChart(datasetKey, data, selectedAreas, populationData, lookup) 
     compareRates = compareSums.map((sum) => (totalCompare ? (sum / totalCompare) * 100 : 0));
   }
 
-  // HTML
   let chartHTML = `
     <h5 class='chart-heading' id='heading-${datasetKey}'>
       ${title}
@@ -366,18 +384,13 @@ function generateChart(datasetKey, data, selectedAreas, populationData, lookup) 
       <div class="glass">
         <p class="bar-label">${toTitleCase(column)}</p>
         <div class="progress-container">
-          <!-- GREY = comparison target (citywide by default, or chosen neighborhood) -->
           <div class="progress-citywide" style="width: ${Math.min(compareRates[i], 100)}%"></div>
-
-          <!-- PINK = local -->
           <div class="progress-local" style="width: ${Math.min(localRates[i], 100)}%"></div>
 
-          <!-- show compare value as the grey label pill (original placement) -->
           <span class="progress-percentage overall-highlight"
                 style="left: calc(${Math.min(compareRates[i], 90)}% + 6px)">${compareValue}</span>
         </div>
 
-        <!-- local label stays as before -->
         <div class="mark-text local-highlight" style="left: calc(${Math.min(localRates[i], 90)}% + 2px)">${localValue}</div>
       </div>
     `;
@@ -424,9 +437,14 @@ function addExpandCollapseListeners() {
 // clear everything
 function clear() {
   selectedAreas.forEach(function (area) {
-    changeMapSelection([area], false);
+    changeMapSelection([area], false, "selected");
   });
   selectedAreas = [];
+
+  compareSelectedAreas.forEach(function (area) {
+    changeMapSelection([area], false, "compareSelected");
+  });
+  compareSelectedAreas = [];
 
   areaList.innerHTML = "<span class='area'>No area selected</span>";
   results.innerHTML = "";
@@ -434,10 +452,16 @@ function clear() {
 
   dropdown.value = "custom";
 
-  // ✅ NEW: also reset the grey chip + compare state
+  // Reset pink label
+  if (localLegendLabel) localLegendLabel.textContent = "Local data";
+
+  // Reset compare
   compareNeighborhood = "";
   if (compareDropdown) compareDropdown.value = "";
   if (compareLegendLabel) compareLegendLabel.textContent = "Citywide data";
+
+  // Re-enable all main dropdown options
+  refreshMainDropdown("");
 
   delay(250).then(() => pymChild.sendHeight());
 }
@@ -491,8 +515,20 @@ function mapFillFunction(mapID, visibility, source) {
     source: source,
     layout: { visibility: visibility },
     paint: {
-      "fill-color": ["case", ["boolean", ["feature-state", "selected"], false], "#f220de", "transparent"],
-      "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.85, 0.65],
+      "fill-color": [
+        "case",
+        ["boolean", ["feature-state", "selected"], false],
+        "#f220de",
+        ["boolean", ["feature-state", "compareSelected"], false],
+        "#bfbfbf",
+        "transparent",
+      ],
+      "fill-opacity": [
+        "case",
+        ["boolean", ["feature-state", "hover"], false],
+        0.85,
+        0.65,
+      ],
     },
   };
 }
@@ -513,10 +549,6 @@ function mapOutlineFunction(mapID, visibility, source) {
 ///
 /// HELPERS
 ///
-
-function removeSpaces(inputString) {
-  return inputString.replace(/\s/g, "");
-}
 
 function delay(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
