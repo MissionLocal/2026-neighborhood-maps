@@ -592,6 +592,31 @@ map.on("load", function () {
   map.addLayer(mapOutlineDetails, "water-point-label");
 });
 
+map.on("mouseenter", mapFill, function () {
+  map.getCanvas().style.cursor = "pointer";
+});
+map.on("mouseleave", mapFill, function () {
+  map.getCanvas().style.cursor = "";
+});
+let hoveredId = null;
+
+map.on("mousemove", mapFill, (e) => {
+  if (e.features.length > 0) {
+    if (hoveredId !== null) {
+      map.setFeatureState({ source: source, id: hoveredId }, { hover: false });
+    }
+    hoveredId = e.features[0].properties.name;
+    map.setFeatureState({ source: source, id: hoveredId }, { hover: true });
+  }
+});
+
+map.on("mouseleave", mapFill, () => {
+  if (hoveredId !== null) {
+    map.setFeatureState({ source: source, id: hoveredId }, { hover: false });
+  }
+  hoveredId = null;
+});
+
 // fit map to container
 this.map.once("load", () => {
   this.map.resize();
