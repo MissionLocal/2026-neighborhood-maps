@@ -23,7 +23,7 @@ body {
   .map {
     width: 100%;
     max-width: 400px;
-    aspect-ratio: 1 / 1;   /* makes it square on mobile */
+    aspect-ratio: auto;   /* makes it square on mobile */
     box-shadow: 0 4px 8px rgba(0,0,0,.1);
   }
   
@@ -99,8 +99,8 @@ body {
   
     .map {
       max-width: 520px;
-      aspect-ratio: auto;      /* disable mobile square behavior */
-      height: 400px;           /* 🔥 NEW: desktop height = 300px */
+      aspect-ratio: 1/1.3;      /* disable mobile square behavior */
+      height: 600px;      
     }
   
     .note-container {
