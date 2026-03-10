@@ -11,10 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
         center: [-122.431297, 37.773972],
         zoom: 10.5,
-        maxBounds: [
-            [-122.60, 37.68],
-            [-122.28, 37.88]
-        ],
         // ---- Require pinch to zoom, disable scroll wheel ----
         scrollZoom: false,
         dragRotate: false,
@@ -23,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     if (window.innerWidth < 768) {
-        map.setZoom(10.5);
+        map.setZoom(10);
     }
 
     const neighborhoodUrl = 'bayview.geojson';
