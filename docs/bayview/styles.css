@@ -100,7 +100,6 @@ body {
 .map {
   width: 100%;
   max-width: 400px;
-  aspect-ratio: 3 / 4;   /* gives ~500px tall on a 375px wide phone */
   box-shadow: 0 4px 8px rgba(0,0,0,.1);
 }
   
