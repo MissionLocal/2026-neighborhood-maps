@@ -4,10 +4,10 @@ mapboxgl.accessToken =
 
 // define basemap
 if (window.innerWidth < 400) {
-  var mapZoom = 11;
+  var mapZoom = 10.25;
   var mapY = 37.765;
 } else {
-  var mapZoom = 11;
+  var mapZoom = 10.25;
   var mapY = 37.758;
 }
 var map = new mapboxgl.Map({
