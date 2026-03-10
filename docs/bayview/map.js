@@ -67,8 +67,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (map.getLayer('settlement-subdivision-label')) map.moveLayer('settlement-subdivision-label');
         } catch (e) {}
 
+        
+    setTimeout(() => {
         map.resize();
         pymChild.sendHeight();
+    }, 300)
     });
 
     window.addEventListener('resize', () => {
