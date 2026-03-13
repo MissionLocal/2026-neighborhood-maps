@@ -41,85 +41,81 @@ document.addEventListener('DOMContentLoaded', async () => {
         const neighborhoodColor = "#efbe25"; // gold
         const district1Color = "#0dd6c7";    // teal
         const district2Color = "#efbe25";    // pink
-        map.on('load', () => {
-            // ---- Sources ----
-            map.addSource("neighborhood", { type: "geojson", data: neighborhoodGJ });
-            map.addSource("district-1", { type: "geojson", data: district1GJ });
-            map.addSource("district-2", { type: "geojson", data: district2GJ });
 
-            // ---- Layers: neighborhood ----
-            map.addLayer({
-                id: "neighborhood-fill",
-                type: "fill",
-                source: "neighborhood",
-                paint: {
-                    "fill-color": neighborhoodColor,
-                    "fill-opacity": 0.12,
-                },
-            });
+        // ---- Sources ----
+        map.addSource("neighborhood", { type: "geojson", data: neighborhoodGJ });
+        map.addSource("district-1", { type: "geojson", data: district1GJ });
+        map.addSource("district-2", { type: "geojson", data: district2GJ });
 
-            map.addLayer({
-                id: "neighborhood-outline",
-                type: "line",
-                source: "neighborhood",
-                paint: {
-                    "line-color": neighborhoodColor,
-                    "line-width": 1.5,
-                },
-            });
-
-            // ---- Layers: districts ----
-            // District 1 = dashed
-            map.addLayer({
-                id: "district-1-outline",
-                type: "line",
-                source: "district-1",
-                paint: {
-                    "line-color": district1Color,
-                    "line-width": 1.8,
-                    "line-dasharray": [3, 2],
-                },
-            });
-
-            // District 2 = dotted-ish (very short dash + larger gap)
-            map.addLayer({
-                id: "district-2-outline",
-                type: "line",
-                source: "district-2",
-                paint: {
-                    "line-color": district2Color,
-                    "line-width": 1.8,
-                    "line-dasharray": [3, 2],
-                },
-            });
-
-            // ---- Ensure District 1 is on top ----
-
-            map.moveLayer("district-1-outline");
-
-
-
-            // ---- Click anywhere → open link ----
-            const neighborhoodUrlOut = 'https://missionlocal.org/';
-            map.getCanvas().style.cursor = 'pointer';
-            map.on('click', () => {
-                window.open(neighborhoodUrlOut, '_blank');
-            });
-
-            try {
-                if (map.getLayer('road-label-navigation')) map.moveLayer('road-label-navigation');
-                if (map.getLayer('settlement-subdivision-label')) map.moveLayer('settlement-subdivision-label');
-            } catch (e) { }
-
-
-            setTimeout(() => {
-                map.resize();
-                pymChild.sendHeight();
-            }, 300)
+        // ---- Layers: neighborhood ----
+        map.addLayer({
+            id: "neighborhood-fill",
+            type: "fill",
+            source: "neighborhood",
+            paint: {
+                "fill-color": neighborhoodColor,
+                "fill-opacity": 0.12,
+            },
         });
 
-        window.addEventListener('resize', () => {
+        map.addLayer({
+            id: "neighborhood-outline",
+            type: "line",
+            source: "neighborhood",
+            paint: {
+                "line-color": neighborhoodColor,
+                "line-width": 1.5,
+            },
+        });
+
+        // ---- Layers: districts ----
+        // District 1 = dashed
+        map.addLayer({
+            id: "district-1-outline",
+            type: "line",
+            source: "district-1",
+            paint: {
+                "line-color": district1Color,
+                "line-width": 1.8,
+                "line-dasharray": [3, 2],
+            },
+        });
+
+        // District 2 = dotted-ish (very short dash + larger gap)
+        map.addLayer({
+            id: "district-2-outline",
+            type: "line",
+            source: "district-2",
+            paint: {
+                "line-color": district2Color,
+                "line-width": 1.8,
+                "line-dasharray": [3, 2],
+            },
+        });
+
+        // ---- Ensure District 1 is on top ----
+        map.moveLayer("district-1-outline");
+
+        // ---- Click anywhere → open link ----
+        const neighborhoodUrlOut = 'https://missionlocal.org/';
+        map.getCanvas().style.cursor = 'pointer';
+        map.on('click', () => {
+            window.open(neighborhoodUrlOut, '_blank');
+        });
+
+        try {
+            if (map.getLayer('road-label-navigation')) map.moveLayer('road-label-navigation');
+            if (map.getLayer('settlement-subdivision-label')) map.moveLayer('settlement-subdivision-label');
+        } catch (e) { }
+
+        setTimeout(() => {
             map.resize();
             pymChild.sendHeight();
-        });
+        }, 300);
     });
+
+    window.addEventListener('resize', () => {
+        map.resize();
+        pymChild.sendHeight();
+    });
+});
