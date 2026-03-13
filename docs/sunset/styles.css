@@ -65,26 +65,6 @@ body {
     flex-shrink: 0;
   }
   
-  /* info box */
-  .info-box {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 14px;
-    z-index: 2;
-    width: calc(100% - 12px);
-    max-width: 460px;
-    box-sizing: border-box;
-    padding: 8px 10px;
-    background: rgba(255,255,255,.98);
-    border-radius: 2px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
-    font-size: 13px;
-    line-height: 1.35;
-    max-height: 40%;
-    overflow-y: auto;
-  }
-  
   a {
     color: #666666;
     text-decoration: underline;
