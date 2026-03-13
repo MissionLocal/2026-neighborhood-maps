@@ -1,7 +1,7 @@
 /* base */
 body {
     margin: 0;
-    padding: 0 0 20px 0;
+    padding: 0 0 10px 0;
     font-family: 'Barlow', sans-serif;
   }
   
@@ -23,7 +23,7 @@ body {
   .map {
     width: 100%;
     max-width: 400px;
-    aspect-ratio: 1 / 1;   /* makes it square on mobile */
+    aspect-ratio: auto;   /* makes it square on mobile */
     box-shadow: 0 4px 8px rgba(0,0,0,.1);
   }
   
@@ -97,11 +97,11 @@ body {
       max-width: 520px;        /* desktop width */
     }
   
-    .map {
-      max-width: 520px;
-      aspect-ratio: auto;      /* disable mobile square behavior */
-      height: 400px;           /* 🔥 NEW: desktop height = 300px */
-    }
+.map {
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0,0,0,.1);
+}
   
     .note-container {
       max-width: 520px;        /* match map width */
@@ -129,14 +129,5 @@ body {
     .note-container {
       max-width: 400px;        /* match mobile map width */
     }
-  }
-  
-  .legend-line {
-    width: 22px;
-    height: 0;
-    border-top-width: 3px; /* try 3.5px if you want punchier dots */
-    border-top-style: solid;
-    border-top-color: #f36e57;
-    flex-shrink: 0;
   }
   

@@ -11,13 +11,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const map = new mapboxgl.Map({
       container: "map",
       style: "mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a",
-      center: [-122.431297, 37.773972], // San Francisco center
-      zoom: 10.5,
-      maxBounds: [
-        [-122.60, 37.68],
-        [-122.28, 37.88],
-      ],
-              scrollZoom: false,
+              center: [-122.431297, 37.773972],
+        zoom: 10.25,
+        // ---- Require pinch to zoom, disable scroll wheel ----
+        scrollZoom: false,
         dragRotate: false,
             dragPan: false,
         touchPitch: false
