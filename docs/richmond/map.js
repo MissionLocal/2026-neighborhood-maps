@@ -1,5 +1,5 @@
 // map.js — neighborhood + political district outlines
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const pymChild = new pym.Child();
     mapboxgl.accessToken = "pk.eyJ1IjoibWxub3ciLCJhIjoiY21kNmw1aTAyMDFkbTJqb3Z2dTN0YzRjMyJ9.4abRTnHdhMI-RE48dHNtYw";
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // ---- Require pinch to zoom, disable scroll wheel ----
         scrollZoom: false,
         dragRotate: false,
-            dragPan: false,
+        dragPan: false,
         touchPitch: false
     });
 
@@ -22,58 +22,60 @@ document.addEventListener('DOMContentLoaded', async () => {
         map.setZoom(10.25);
     }
 
-   // ---- GeoJSON paths (change this for each neighborhood) ----
-    const neighborhoodUrl = 'richmond.geojson';
-    const districtUrl = 'district.geojson';
+    map.on("load", () => {
+        // ---- Colors ----
+        const neighborhoodColor = "#efbe25"; // gold
+        const district1Color = "#0dd6c7";    // teal
+        const district2Color = "#efbe25";    // pink
 
-    const [neighborhoodGJ, districtGJ] = await Promise.all([
-        fetch(neighborhoodUrl).then(r => r.json()),
-        fetch(districtUrl).then(r => r.json())
-    ]);
-
-    map.on('load', () => {
-        // ---- Sources ----
-        map.addSource('neighborhood', {
-            type: 'geojson',
-            data: neighborhoodGJ
+        // ---- Sources (Mapbox tilesets) ----
+        map.addSource("neighborhood", {
+            type: "vector",
+            url: "mapbox://mlnow.2v2kdwqx"
+        });
+        map.addSource("district-1", {
+            type: "vector",
+            url: "mapbox://mlnow.1b5i409m"
         });
 
-        map.addSource('district', {
-            type: 'geojson',
-            data: districtGJ
-        });
-
-        // ---- Layers ----
+        // ---- Layers: neighborhood ----
         map.addLayer({
-            id: 'neighborhood-fill',
-            type: 'fill',
-            source: 'neighborhood',
+            id: "neighborhood-fill",
+            type: "fill",
+            source: "neighborhood",
+            "source-layer": "mlnow_2v2kdwqx",
             paint: {
-                'fill-color': '#efbe25',
-                'fill-opacity': 0.12
-            }
+                "fill-color": neighborhoodColor,
+                "fill-opacity": 0.12,
+            },
         });
 
         map.addLayer({
-            id: 'neighborhood-outline',
-            type: 'line',
-            source: 'neighborhood',
+            id: "neighborhood-outline",
+            type: "line",
+            source: "neighborhood",
+            "source-layer": "mlnow_2v2kdwqx",
             paint: {
-                'line-color': '#efbe25',
-                'line-width': 1.5
-            }
+                "line-color": neighborhoodColor,
+                "line-width": 1.5,
+            },
         });
 
+        // ---- Layers: district 1 (dashed) ----
         map.addLayer({
-            id: 'district-outline',
-            type: 'line',
-            source: 'district',
+            id: "district-1-outline",
+            type: "line",
+            source: "district-1",
+            "source-layer": "mlnow_1b5i409m",
             paint: {
-                'line-color': '#efbe25',
-                'line-width': 1.5,
-                'line-dasharray': [3, 2]
-            }
+                "line-color": district1Color,
+                "line-width": 1.8,
+                "line-dasharray": [3, 2],
+            },
         });
+
+        // ---- Ensure District 1 is on top ----
+        map.moveLayer("district-1-outline");
 
         // ---- Click anywhere → open link ----
         const neighborhoodUrlOut = 'https://missionlocal.org/';
@@ -85,13 +87,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             if (map.getLayer('road-label-navigation')) map.moveLayer('road-label-navigation');
             if (map.getLayer('settlement-subdivision-label')) map.moveLayer('settlement-subdivision-label');
-        } catch (e) {}
+        } catch (e) { }
 
-        
-    setTimeout(() => {
-        map.resize();
-        pymChild.sendHeight();
-    }, 300)
+        setTimeout(() => {
+            map.resize();
+            pymChild.sendHeight();
+        }, 300);
     });
 
     window.addEventListener('resize', () => {
