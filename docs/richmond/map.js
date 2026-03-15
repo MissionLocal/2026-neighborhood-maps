@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: "neighborhood-fill",
             type: "fill",
             source: "neighborhood",
-            "source-layer": "mlnow_2v2kdwqx",
+            "source-layer": "district-1-1uj4g1",
             paint: {
                 "fill-color": neighborhoodColor,
                 "fill-opacity": 0.12,
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: "neighborhood-outline",
             type: "line",
             source: "neighborhood",
-            "source-layer": "mlnow_2v2kdwqx",
+            "source-layer": "district-1-1uj4g1",
             paint: {
                 "line-color": neighborhoodColor,
                 "line-width": 1.5,
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: "district-1-outline",
             type: "line",
             source: "district-1",
-            "source-layer": "mlnow_1b5i409m",
+            "source-layer": "richmond-02wma6",
             paint: {
                 "line-color": district1Color,
                 "line-width": 1.8,
