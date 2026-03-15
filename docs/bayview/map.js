@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // ---- Sources (Mapbox tilesets) ----
         map.addSource('neighborhood', {
             type: 'vector',
-            url: 'mlnow.aqx35bym'   // e.g. mapbox://mlnow.xxxxxxxx
+            url: 'mapbox://mlnow.aqx35bym'   // e.g. mapbox://mlnow.xxxxxxxx
         });
         map.addSource('district', {
             type: 'vector',
-            url: 'mlnow.a4vfns4v'       // e.g. mapbox://mlnow.xxxxxxxx
+            url: 'mapbox://mlnow.a4vfns4v'       // e.g. mapbox://mlnow.xxxxxxxx
         });
 
         map.addLayer({
