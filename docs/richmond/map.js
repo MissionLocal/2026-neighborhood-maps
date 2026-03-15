@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // ---- Colors ----
         const neighborhoodColor = "#efbe25"; // gold
         const district1Color = "#0dd6c7";    // teal
-        const district2Color = "#efbe25";    // pink
 
         // ---- Sources (Mapbox tilesets) ----
         map.addSource("neighborhood", {

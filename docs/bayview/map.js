@@ -1,5 +1,5 @@
 // map.js — neighborhood + political district outlines
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const pymChild = new pym.Child();
     mapboxgl.accessToken = "pk.eyJ1IjoibWxub3ciLCJhIjoiY21kNmw1aTAyMDFkbTJqb3Z2dTN0YzRjMyJ9.4abRTnHdhMI-RE48dHNtYw";
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // ---- Require pinch to zoom, disable scroll wheel ----
         scrollZoom: false,
         dragRotate: false,
-            dragPan: false,
+        dragPan: false,
         touchPitch: false
     });
 
@@ -22,22 +22,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         map.setZoom(10.25);
     }
 
-    const neighborhoodUrl = 'bayview.geojson';
-    const districtUrl = 'district.geojson';
-
-    const [neighborhoodGJ, districtGJ] = await Promise.all([
-        fetch(neighborhoodUrl).then(r => r.json()),
-        fetch(districtUrl).then(r => r.json())
-    ]);
-
     map.on('load', () => {
-        map.addSource('neighborhood', { type: 'geojson', data: neighborhoodGJ });
-        map.addSource('district', { type: 'geojson', data: districtGJ });
+        // ---- Sources (Mapbox tilesets) ----
+        map.addSource('neighborhood', {
+            type: 'vector',
+            url: 'mlnow.aqx35bym'   // e.g. mapbox://mlnow.xxxxxxxx
+        });
+        map.addSource('district', {
+            type: 'vector',
+            url: 'mlnow.a4vfns4v'       // e.g. mapbox://mlnow.xxxxxxxx
+        });
 
         map.addLayer({
             id: 'neighborhood-fill',
             type: 'fill',
             source: 'neighborhood',
+            'source-layer': 'bayview-dtqd6x', // layer name from Mapbox Studio
             paint: { 'fill-color': '#efbe25', 'fill-opacity': 0.12 }
         });
 
@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: 'neighborhood-outline',
             type: 'line',
             source: 'neighborhood',
+            'source-layer': 'district-10-0guzdv', // same as above
             paint: { 'line-color': '#efbe25', 'line-width': 1.5 }
         });
 
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: 'district-outline',
             type: 'line',
             source: 'district',
+            'source-layer': 'district-10-0guzdv',     // layer name from Mapbox Studio
             paint: { 'line-color': '#efbe25', 'line-width': 1.5, 'line-dasharray': [3, 2] }
         });
 
@@ -67,11 +69,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (map.getLayer('settlement-subdivision-label')) map.moveLayer('settlement-subdivision-label');
         } catch (e) {}
 
-        
-    setTimeout(() => {
-        map.resize();
-        pymChild.sendHeight();
-    }, 300)
+        setTimeout(() => {
+            map.resize();
+            pymChild.sendHeight();
+        }, 300);
     });
 
     window.addEventListener('resize', () => {
