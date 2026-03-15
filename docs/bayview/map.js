@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'neighborhood-outline',
             type: 'line',
             source: 'neighborhood',
-            'source-layer': 'district-10-0guzdv', // same as above
+            'source-layer': 'bayview-dtqd6x', // same as above
             paint: { 'line-color': '#efbe25', 'line-width': 1.5 }
         });
 
