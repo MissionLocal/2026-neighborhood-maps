@@ -19,7 +19,6 @@ body {
     margin: 10px auto;
   }
   
-  /* MOBILE-FIRST: map width matches screen, height = width (square) */
   .map {
     width: 100%;
     max-width: 400px;
@@ -64,6 +63,7 @@ body {
     border-top-color: #f36e57;
     flex-shrink: 0;
   }
+
   
   /* info box */
   .info-box {
