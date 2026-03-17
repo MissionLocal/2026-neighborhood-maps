@@ -1,5 +1,5 @@
 // map.js — neighborhood + political district outlines
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const pymChild = new pym.Child();
     mapboxgl.accessToken = "pk.eyJ1IjoibWxub3ciLCJhIjoiY21kNmw1aTAyMDFkbTJqb3Z2dTN0YzRjMyJ9.4abRTnHdhMI-RE48dHNtYw";
 
@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         maxBounds: [
             [-122.60, 37.68],   // southwest corner
             [-122.28, 37.88]    // northeast corner
-        ], 
-                scrollZoom: false,
+        ],
+        scrollZoom: false,
         dragRotate: false,
-            dragPan: false,
+        dragPan: false,
         touchPitch: false
     });
 
@@ -28,25 +28,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         map.setZoom(10.5); // mobile tweak
     }
 
-    // ---- GeoJSON paths (change this for each neighborhood) ----
-    const neighborhoodUrl = 'tenderloin.geojson';
-    const districtUrl = 'district.geojson';
-
-    const [neighborhoodGJ, districtGJ] = await Promise.all([
-        fetch(neighborhoodUrl).then(r => r.json()),
-        fetch(districtUrl).then(r => r.json())
-    ]);
-
     map.on('load', () => {
-        // ---- Sources ----
+        // ---- Sources (Mapbox tilesets) ----
         map.addSource('neighborhood', {
-            type: 'geojson',
-            data: neighborhoodGJ
+            type: 'vector',
+            url: 'mapbox://mlnow.0v3scdh5'   // e.g. mapbox://mlnow.xxxxxxxx
         });
 
         map.addSource('district', {
-            type: 'geojson',
-            data: districtGJ
+            type: 'vector',
+            url: 'mapbox://mlnow.2i2jbr3x'       // e.g. mapbox://mlnow.xxxxxxxx
         });
 
         // ---- Layers ----
@@ -54,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: 'neighborhood-fill',
             type: 'fill',
             source: 'neighborhood',
+            'source-layer': 'tenderloin-ccogd2', // layer name from Mapbox Studio
             paint: {
                 'fill-color': '#efbe25',
                 'fill-opacity': 0.12
@@ -64,6 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: 'neighborhood-outline',
             type: 'line',
             source: 'neighborhood',
+            'source-layer': 'tenderloin-ccogd2', // same as above
             paint: {
                 'line-color': '#efbe25',
                 'line-width': 1.5
@@ -74,6 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: 'district-outline',
             type: 'line',
             source: 'district',
+            'source-layer': 'district-5-8b3c3e',     // layer name from Mapbox Studio
             paint: {
                 'line-color': '#efbe25',
                 'line-width': 1.5,
