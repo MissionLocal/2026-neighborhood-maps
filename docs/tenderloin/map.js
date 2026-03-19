@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // ---- Interaction: click anywhere → open link ----
-        const neighborhoodUrlOut = 'https://missionlocal.org/'; // <-- your story URL
+        const neighborhoodUrlOut = 'https://missionlocal.org/tenderloin-resources/'; // <-- your story URL
 
         map.getCanvas().style.cursor = 'pointer';
 
