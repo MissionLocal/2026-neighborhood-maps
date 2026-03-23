@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (window.innerWidth < 768) {
-        map.setZoom(11); // mobile tweak
+        map.setZoom(10.5); // mobile tweak
     }
 
     map.on('load', () => {
