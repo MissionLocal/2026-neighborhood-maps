@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         map.moveLayer("district-1-outline");
 
         // ---- Click anywhere → open link ----
-        const neighborhoodUrlOut = 'https://missionlocal.org/';
+        const neighborhoodUrlOut = 'https://missionlocal.org/sunset-resources/';
         map.getCanvas().style.cursor = 'pointer';
         map.on('click', () => {
             window.open(neighborhoodUrlOut, '_blank');

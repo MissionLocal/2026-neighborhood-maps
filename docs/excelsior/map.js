@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         // ---- Interaction: click anywhere → open link ----
-        const neighborhoodUrlOut = 'https://missionlocal.org/'; // <-- your story URL
+        const neighborhoodUrlOut = 'https://missionlocal.org/excelsior-resources/'; // <-- your story URL
 
         map.getCanvas().style.cursor = 'pointer';
 

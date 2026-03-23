@@ -233,6 +233,10 @@
    // 37.7824381,-122.4137649
     });
 
+       if (window.innerWidth < 768) {
+        map.setZoom(13); // mobile tweak
+    }
+
     map.on('load', () => {
 
       // Points
