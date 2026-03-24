@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
         center: [-122.431297, 37.773972],
         zoom: 10.25,
-        // ---- Require pinch to zoom, disable scroll wheel ----
         scrollZoom: false,
         dragRotate: false,
         dragPan: false,
@@ -22,36 +21,43 @@ document.addEventListener('DOMContentLoaded', async () => {
         map.setZoom(10.25);
     }
 
+    // ---- Mapbox tileset IDs (replace with your actual tileset IDs) ----
+    // Format: "mapbox://YOUR_USERNAME.TILESET_ID"
+    const NEIGHBORHOOD_TILESET = "mapbox://mlnow.4p41p2qi";
+    const DISTRICT1_TILESET    = "mapbox://mlnow.7sprss6m";
+    const DISTRICT2_TILESET    = "mapbox://mlnow.6vm5tysn";
 
-    // ---- GeoJSON paths (change these as needed) ----
-    const neighborhoodUrl = "sunset.geojson";
-
-    // Two separate district files
-    const district1Url = "district.geojson";
-    const district2Url = "district_7.geojson";
-
-    const [neighborhoodGJ, district1GJ, district2GJ] = await Promise.all([
-        fetch(neighborhoodUrl).then((r) => r.json()),
-        fetch(district1Url).then((r) => r.json()),
-        fetch(district2Url).then((r) => r.json()),
-    ]);
+    // ---- Source layer names (the layer name inside the tileset, visible in Mapbox Studio) ----
+    const NEIGHBORHOOD_SOURCE_LAYER = "sunset-d0z0so";
+    const DISTRICT1_SOURCE_LAYER    = "district-2iluic";
+    const DISTRICT2_SOURCE_LAYER    = "district_7-cn8pjl";
 
     map.on("load", () => {
         // ---- Colors ----
         const neighborhoodColor = "#efbe25"; // gold
-        const district1Color = "#0dd6c7";    // teal
-        const district2Color = "#efbe25";    // pink
+        const district1Color    = "#0dd6c7"; // teal
+        const district2Color    = "#efbe25"; // gold
 
-        // ---- Sources ----
-        map.addSource("neighborhood", { type: "geojson", data: neighborhoodGJ });
-        map.addSource("district-1", { type: "geojson", data: district1GJ });
-        map.addSource("district-2", { type: "geojson", data: district2GJ });
+        // ---- Sources (vector tiles) ----
+        map.addSource("neighborhood", {
+            type: "vector",
+            url: NEIGHBORHOOD_TILESET,
+        });
+        map.addSource("district-1", {
+            type: "vector",
+            url: DISTRICT1_TILESET,
+        });
+        map.addSource("district-2", {
+            type: "vector",
+            url: DISTRICT2_TILESET,
+        });
 
         // ---- Layers: neighborhood ----
         map.addLayer({
             id: "neighborhood-fill",
             type: "fill",
             source: "neighborhood",
+            "source-layer": NEIGHBORHOOD_SOURCE_LAYER,
             paint: {
                 "fill-color": neighborhoodColor,
                 "fill-opacity": 0.12,
@@ -62,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: "neighborhood-outline",
             type: "line",
             source: "neighborhood",
+            "source-layer": NEIGHBORHOOD_SOURCE_LAYER,
             paint: {
                 "line-color": neighborhoodColor,
                 "line-width": 1.5,
@@ -74,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             id: "district-1-outline",
             type: "line",
             source: "district-1",
+            "source-layer": DISTRICT1_SOURCE_LAYER,
             paint: {
                 "line-color": district1Color,
                 "line-width": 1.8,
@@ -81,11 +89,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             },
         });
 
-        // District 2 = dotted-ish (very short dash + larger gap)
+        // District 2 = dotted-ish
         map.addLayer({
             id: "district-2-outline",
             type: "line",
             source: "district-2",
+            "source-layer": DISTRICT2_SOURCE_LAYER,
             paint: {
                 "line-color": district2Color,
                 "line-width": 1.8,
