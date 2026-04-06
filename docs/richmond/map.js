@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     map.on("load", () => {
         // ---- Colors ----
         const neighborhoodColor = "#efbe25"; // gold
-        const district1Color = "#0dd6c7";    // teal
+        const district1Color = "#efbe25";    // teal
 
         // ---- Sources (Mapbox tilesets) ----
         map.addSource("neighborhood", {
