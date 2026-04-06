@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
-        center: [-122.419567, 37.749924],
-        zoom: 11.5,
+        center: [-122.431297, 37.773972],
+        zoom: 10.25,
         scrollZoom: false,
         dragRotate: false,
         dragPan: false,
