@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // ---- Click anywhere → open link ----
-        const neighborhoodUrlOut = 'https://missionlocal.org/mission-resources/';
+        const neighborhoodUrlOut = 'https://missionlocal.org/bayview-resources/';
         map.getCanvas().style.cursor = 'pointer';
         map.on('click', () => {
             window.open(neighborhoodUrlOut, '_blank');
