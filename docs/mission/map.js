@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // ---- Interaction: click anywhere → open link ----
-        const neighborhoodUrlOut = 'https://missionlocal.org/'; // <-- your story URL
+        const neighborhoodUrlOut = 'https://missionlocal.org/mission-resources/'; // <-- your story URL
 
         map.getCanvas().style.cursor = 'pointer';
 
