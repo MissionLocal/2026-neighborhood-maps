@@ -9,9 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mlnow/cmis0bnr0000401sr9iyb6i1a',
-        center: [-122.4075, 37.7815], 
-        zoom: 12.4,
-        // ---- Require pinch to zoom, disable scroll wheel ----
+        center: [-122.431297, 37.773972],
+        zoom: 10.25,
+        maxBounds: [
+            [-122.60, 37.68],   // southwest corner
+            [-122.28, 37.88]    // northeast corner
+        ],
         scrollZoom: false,
         dragRotate: false,
         dragPan: false,
