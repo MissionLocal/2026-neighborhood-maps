@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // "soma-boundary.geojson" and the gold outline below will appear automatically.
         map.addSource("neighborhood", {
             type: "geojson",
-            data: "soma-boundary.geojson"
+            data: "soma.geojson"
         });
         map.addSource("district-6", {
             type: "geojson",
