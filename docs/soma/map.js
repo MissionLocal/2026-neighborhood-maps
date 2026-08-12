@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (window.innerWidth < 768) {
-        map.setZoom(12.4);
+        map.setZoom(10.25);
     }
 
     map.on("load", () => {
